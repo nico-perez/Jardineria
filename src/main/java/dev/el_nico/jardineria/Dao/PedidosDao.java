@@ -67,7 +67,7 @@ public class PedidosDao implements IDao<Pedido> {
     }
 
     @Override
-    public void modificar(Pedido t, Object[] params) {
+    public void modificar(Pedido t) {
         // TODO Auto-generated method stub
 
     }

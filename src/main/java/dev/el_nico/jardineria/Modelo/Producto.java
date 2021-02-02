@@ -3,7 +3,6 @@ package dev.el_nico.jardineria.modelo;
 import java.util.Optional;
 
 import dev.el_nico.jardineria.excepciones.ExcepcionDatoNoValido;
-import dev.el_nico.jardineria.util.IBuilder;
 
 public class Producto {
     private String codigo_producto;
@@ -60,7 +59,7 @@ public class Producto {
         return precio_proveedor;
     }
 
-    public static class Builder implements IBuilder<Producto> {
+    public static class Builder {
         private Producto producto;
 
         public Builder(String codigo_producto, String nombre, String gama, int cantidad_en_stock, double precio_venta) {
@@ -91,7 +90,6 @@ public class Producto {
             return this;
         }
 
-        @Override
         public Producto build() throws ExcepcionDatoNoValido {
             boolean datos_necesarios_asignados = true;
             datos_necesarios_asignados &= (producto.codigo_producto != null) 

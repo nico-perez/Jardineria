@@ -121,7 +121,7 @@ public class ClientesGsonDao implements IDao<Cliente> {
     }
 
     @Override
-    public void modificar(Cliente t, Object[] params) {
+    public void modificar(Cliente t) {
         // TODO Auto-generated method stub
         // jeje
     }

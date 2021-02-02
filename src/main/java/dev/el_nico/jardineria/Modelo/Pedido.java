@@ -4,8 +4,6 @@ import java.util.Calendar;
 import java.util.Optional;
 
 import dev.el_nico.jardineria.excepciones.ExcepcionDatoNoValido;
-import dev.el_nico.jardineria.util.IBuilder;
-
 
 /**
  * Objeto que representa a uno de los pedidos
@@ -110,7 +108,7 @@ public class Pedido {
     }
 
     /** Clase para buildear instancias válidas de Pedido. */
-    public static class Builder implements IBuilder<Pedido> {
+    public static class Builder {
         private Pedido pedido;
 
         /** 

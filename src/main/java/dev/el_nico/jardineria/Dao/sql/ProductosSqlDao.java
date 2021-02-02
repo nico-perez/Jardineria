@@ -57,7 +57,7 @@ public class ProductosSqlDao implements IDao<Producto> {
     }
 
     @Override
-    public void modificar(Producto t, Object[] params) {
+    public void modificar(Producto t) {
         if (t != null && params != null && params.length > 0) {
             try (PreparedStatement stat = conn.prepareStatement(
                     //                                   1         2       3              4            5              6                    7               8                   9                      10

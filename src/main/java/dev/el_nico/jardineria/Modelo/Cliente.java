@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import dev.el_nico.jardineria.excepciones.ExcepcionDatoNoValido;
 import dev.el_nico.jardineria.excepciones.ExcepcionFormatoIncorrecto;
-import dev.el_nico.jardineria.util.IBuilder;
 
 /**
  * Objeto que representa a uno de los clientes
@@ -241,7 +240,7 @@ public class Cliente {
     }
 
     /** Clase para buildear instancias válidas de Cliente. */
-    public static class Builder implements IBuilder<Cliente> {
+    public static class Builder {
         private Cliente cliente;
 
         /**

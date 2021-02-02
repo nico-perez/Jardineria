@@ -117,7 +117,7 @@ public class PedidosSqlDao implements IDao<Pedido> {
     }
 
     @Override
-    public void modificar(Pedido t, Object[] params) {
+    public void modificar(Pedido t) {
         
     }
 
