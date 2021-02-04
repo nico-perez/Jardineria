@@ -1,4 +1,4 @@
-package dev.el_nico.jardineria.dao.hql;
+package dev.el_nico.jardineria.dao.hibernate;
 
 import java.util.List;
 import java.util.Optional;

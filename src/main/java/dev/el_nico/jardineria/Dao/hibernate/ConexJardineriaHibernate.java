@@ -1,4 +1,4 @@
-package dev.el_nico.jardineria.dao.hql;
+package dev.el_nico.jardineria.dao.hibernate;
 
 import org.hibernate.Session;
 

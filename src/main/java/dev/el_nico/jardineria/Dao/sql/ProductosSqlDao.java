@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -58,40 +57,28 @@ public class ProductosSqlDao implements IDao<Producto> {
 
     @Override
     public void modificar(Producto t) {
-        if (t != null && params != null && params.length > 0) {
+        if (t != null) {
             try (PreparedStatement stat = conn.prepareStatement(
                     //                                   1         2       3              4            5              6                    7               8                   9                      10
                     "update producto set codigo_producto=?, nombre=?, gama=?, dimensiones=?, proveedor=?, descripcion=?, cantidad_en_stock=?, precio_venta=?, precio_proveedor=? where codigo_producto=?;")) {
                 stat.setString(10, t.getCodigo_producto());
 
                 for (int i = 1; i <= 9; ++i) {
-                    Object o = i <= params.length ? params[i - 1] : null;
-                    if (o != null) {
-                        // nonull
-                        if (o instanceof String && ((String)o).equals("sqlnull")) {
-                            // queremos nullear el campo
-                            stat.setObject(i, Types.NULL);
-                        } else {
-                            stat.setObject(i, o);
-                        }
-                    } else {
-                        // sinull (valor por defecto)
-                        Object def;
-                        switch (i) {
-                            case 1: def = t.getCodigo_producto(); break;
-                            case 2: def = t.getNombre(); break;
-                            case 3: def = t.getGama(); break;
-                            case 4: def = t.getDimensiones().orElse(null); break;
-                            case 5: def = t.getProveedor().orElse(null); break;
-                            case 6: def = t.getDescripcion().orElse(null); break;
-                            case 7: def = t.getCantidad_en_stock(); break;
-                            case 8: def = t.getPrecio_venta(); break;
-                            case 9: def = t.getPrecio_proveedor().orElse(null); break;
-                            default: def = null;
-                        }
-
-                        stat.setObject(i, def);
+                    Object def;
+                    switch (i) {
+                        case 1: def = t.getCodigo_producto(); break;
+                        case 2: def = t.getNombre(); break;
+                        case 3: def = t.getGama(); break;
+                        case 4: def = t.getDimensiones().orElse(null); break;
+                        case 5: def = t.getProveedor().orElse(null); break;
+                        case 6: def = t.getDescripcion().orElse(null); break;
+                        case 7: def = t.getCantidad_en_stock(); break;
+                        case 8: def = t.getPrecio_venta(); break;
+                        case 9: def = t.getPrecio_proveedor().orElse(null); break;
+                        default: def = null;
                     }
+
+                    stat.setObject(i, def);
                 }
 
                 stat.executeUpdate();

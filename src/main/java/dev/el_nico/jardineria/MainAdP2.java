@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
-import dev.el_nico.jardineria.dao.hql.ConexJardineriaHibernate;
+import dev.el_nico.jardineria.dao.hibernate.ConexJardineriaHibernate;
 import dev.el_nico.jardineria.excepciones.ExcepcionCodigoYaExistente;
 import dev.el_nico.jardineria.excepciones.ExcepcionDatoNoValido;
 import dev.el_nico.jardineria.excepciones.ExcepcionFormatoIncorrecto;

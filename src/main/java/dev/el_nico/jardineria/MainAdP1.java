@@ -77,17 +77,15 @@ public class MainAdP1 {
         // aqui hay producto si o si
         Producto producto = optproducto.get();
 
-        Object[] params = {
-            pedirString("codigo_producto", true),
-            pedirString("nombre", true),
-            pedirString("gama", true),
-            pedirString("dimensiones", true),
-            pedirString("proveedor", true),
-            pedirString("descripcion", true),
-            pedirEntero("cantidad_en_stock", true),
-            pedirDouble("precio_venta"),
-            pedirDouble("precio_proveedor")
-        };
+        pedirString("codigo_producto", true);
+        pedirString("nombre", true);
+        pedirString("gama", true);
+        pedirString("dimensiones", true);
+        pedirString("proveedor", true);
+        pedirString("descripcion", true);
+        pedirEntero("cantidad_en_stock", true);
+        pedirDouble("precio_venta");
+        pedirDouble("precio_proveedor");
 
         c.productos().modificar(producto, params);
     }
