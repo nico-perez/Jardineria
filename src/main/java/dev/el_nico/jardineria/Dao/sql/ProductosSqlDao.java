@@ -14,15 +14,19 @@ import dev.el_nico.jardineria.modelo.Producto;
 
 public class ProductosSqlDao implements IDao<Producto> {
 
-    private Connection conn;
+    private Connection sql;
 
-    public ProductosSqlDao(Connection conn) {
-        this.conn = conn;
+    @SuppressWarnings("unused")
+    private ConexionJardineria daos;
+
+    public ProductosSqlDao(ConexionJardineria daos) {
+        this.daos = daos;
+        sql = daos.getConnection();
     }
 
     @Override
     public Optional<Producto> uno(Object id) {
-        try (PreparedStatement stat = conn.prepareStatement("select * from producto where codigo_producto=?;")) {
+        try (PreparedStatement stat = sql.prepareStatement("select * from producto where codigo_producto=?;")) {
             stat.setString(1, (String)id);
             ResultSet res = stat.executeQuery();
             if (res.next()) {
@@ -36,7 +40,7 @@ public class ProductosSqlDao implements IDao<Producto> {
 
     @Override
     public List<Producto> todos() {
-        try (PreparedStatement stat = conn.prepareStatement("select * from producto;")) {
+        try (PreparedStatement stat = sql.prepareStatement("select * from producto;")) {
             ResultSet resultados = stat.executeQuery();
             List<Producto> lista = new ArrayList<>();
             while (resultados.next()) {
@@ -52,29 +56,28 @@ public class ProductosSqlDao implements IDao<Producto> {
     @Override
     public void guardar(Producto t) throws Exception {
         // TODO Auto-generated method stub
-
     }
 
     @Override
     public void modificar(Producto t) {
         if (t != null) {
-            try (PreparedStatement stat = conn.prepareStatement(
+            try (PreparedStatement stat = sql.prepareStatement(
                     //                                   1         2       3              4            5              6                    7               8                   9                      10
                     "update producto set codigo_producto=?, nombre=?, gama=?, dimensiones=?, proveedor=?, descripcion=?, cantidad_en_stock=?, precio_venta=?, precio_proveedor=? where codigo_producto=?;")) {
-                stat.setString(10, t.getCodigo_producto());
+                stat.setString(10, t.getCodigoProducto());
 
                 for (int i = 1; i <= 9; ++i) {
                     Object def;
                     switch (i) {
-                        case 1: def = t.getCodigo_producto(); break;
+                        case 1: def = t.getCodigoProducto(); break;
                         case 2: def = t.getNombre(); break;
                         case 3: def = t.getGama(); break;
                         case 4: def = t.getDimensiones().orElse(null); break;
                         case 5: def = t.getProveedor().orElse(null); break;
                         case 6: def = t.getDescripcion().orElse(null); break;
-                        case 7: def = t.getCantidad_en_stock(); break;
-                        case 8: def = t.getPrecio_venta(); break;
-                        case 9: def = t.getPrecio_proveedor().orElse(null); break;
+                        case 7: def = t.getCantidadEnStock(); break;
+                        case 8: def = t.getPrecioVenta(); break;
+                        case 9: def = t.getPrecioProveedor().orElse(null); break;
                         default: def = null;
                     }
 
@@ -92,10 +95,9 @@ public class ProductosSqlDao implements IDao<Producto> {
     @Override
     public void eliminar(Producto t) {
         // TODO Auto-generated method stub
-
     }
 
-    private static Optional<Producto> sacarProductoDeResultSet(ResultSet sqlQuery) throws SQLException {
+    private Optional<Producto> sacarProductoDeResultSet(ResultSet sqlQuery) throws SQLException {
         if (sqlQuery != null) {
             String codigo_producto = sqlQuery.getString("codigo_producto");
             String nombre = sqlQuery.getString("nombre");

@@ -1,9 +1,8 @@
 package dev.el_nico.jardineria.excepciones;
 
-public class ExcepcionCodigoYaExistente extends Exception {
-    private static final long serialVersionUID = 2L;
+public class ExcepcionCodigoYaExistente extends NicoExcepcion {
 
-    public ExcepcionCodigoYaExistente(String msj) {
-        super(msj);
-    }
+    private static final long serialVersionUID = 642334117488673886L;
+
+    public ExcepcionCodigoYaExistente(String msj) { super(msj); }
 }

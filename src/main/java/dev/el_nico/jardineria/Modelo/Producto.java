@@ -8,12 +8,12 @@ public class Producto {
     private String codigo_producto;
     private String nombre;
     private String gama;
-    private Optional<String> dimensiones;
-    private Optional<String> proveedor;
-    private Optional<String> descripcion;
-    private int cantidad_en_stock;
-    private double precio_venta;
-    private Optional<Double> precio_proveedor;
+    private String dimensiones;
+    private String proveedor;
+    private String descripcion;
+    private Integer cantidad_en_stock;
+    private Double precio_venta;
+    private Double precio_proveedor;
 
     private Producto(String codigo_producto, String nombre, String gama, int cantidad_en_stock, double precio_venta) {
         this.codigo_producto = codigo_producto;
@@ -23,7 +23,7 @@ public class Producto {
         this.precio_venta = precio_venta;
     }
 
-    public String getCodigo_producto() {
+    public String getCodigoProducto() {
         return codigo_producto;
     }
 
@@ -36,31 +36,35 @@ public class Producto {
     }
 
     public Optional<String> getDimensiones() {
-        return dimensiones;
+        return Optional.ofNullable(dimensiones);
     }
 
     public Optional<String> getProveedor() {
-        return proveedor;
+        return Optional.ofNullable(proveedor);
     }
 
     public Optional<String> getDescripcion() {
-        return descripcion;
+        return Optional.ofNullable(descripcion);
     }
 
-    public int getCantidad_en_stock() {
+    public int getCantidadEnStock() {
         return cantidad_en_stock;
     }
 
-    public double getPrecio_venta() {
+    public double getPrecioVenta() {
         return precio_venta;
     }
 
-    public Optional<Double> getPrecio_proveedor() {
-        return precio_proveedor;
+    public Optional<Double> getPrecioProveedor() {
+        return Optional.ofNullable(precio_proveedor);
     }
 
     public static class Builder {
         private Producto producto;
+
+        public Builder(Producto producto) {
+            this.producto = producto;
+        }
 
         public Builder(String codigo_producto, String nombre, String gama, int cantidad_en_stock, double precio_venta) {
             producto = new Producto(codigo_producto,
@@ -71,22 +75,22 @@ public class Producto {
         }
 
         public Builder con_dimensiones(String dimensiones) {
-            producto.dimensiones = Optional.ofNullable(dimensiones);
+            producto.dimensiones = dimensiones;
             return this;
         }
 
         public Builder con_proveedor(String proveedor) {
-            producto.proveedor = Optional.ofNullable(proveedor);
+            producto.proveedor = proveedor;
             return this;
         }
 
         public Builder con_descripcion(String descripcion) {
-            producto.descripcion = Optional.ofNullable(descripcion);
+            producto.descripcion = descripcion;
             return this;
         }
 
         public Builder con_precio_proveedor(double precio_proveedor) {
-            producto.precio_proveedor = Optional.of(precio_proveedor);
+            producto.precio_proveedor = precio_proveedor;
             return this;
         }
 

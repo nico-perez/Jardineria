@@ -9,14 +9,14 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "detalle_pedido")
-public class Detalle {
+public class DetallePedido {
     
-    private @EmbeddedId Detalle.Id id;
+    private @EmbeddedId DetallePedido.Id id;
     private Integer cantidad;
     private Integer numero_linea;
     private Double precio_unidad;
 
-    private Detalle() {}
+    private DetallePedido() {}
 
     public Integer getCodigo_pedido() {
         return id.getCodigo_pedido();

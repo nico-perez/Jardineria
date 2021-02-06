@@ -119,26 +119,26 @@ public class EditarCliente extends javax.swing.JDialog {
             if (rowCliente != null) {
                 this.C = app.daos.clientes().uno(rowCliente).orElse(null);
                 if (C != null) {
-                    inputCodigo.setText(Integer.toString(C.get_codigo()));
-                    inputNombre.setText(C.get_nombre());
+                    inputCodigo.setText(Integer.toString(C.getCodigo()));
+                    inputNombre.setText(C.getNombre());
 
-                    inputContactoNombre.setText(C.get_contacto().nombre().orElse(null));
-                    inputContactoApellido.setText(C.get_contacto().apellido().orElse(null));
-                    inputContactoTelefono.setText(C.get_contacto().telefono());
-                    inputContactoFax.setText(C.get_contacto().fax());
+                    inputContactoNombre.setText(C.getContacto().nombre().orElse(null));
+                    inputContactoApellido.setText(C.getContacto().apellido().orElse(null));
+                    inputContactoTelefono.setText(C.getContacto().telefono());
+                    inputContactoFax.setText(C.getContacto().fax());
 
-                    inputDomicilioDireccion1.setText(C.get_domicilio().direccion1());
-                    inputDomicilioDireccion2.setText(C.get_domicilio().direccion2().orElse(null));
-                    inputDomicilioCP.setText(C.get_domicilio().cp().orElse(null));
-                    inputDomicilioCiudad.setText(C.get_domicilio().ciudad());
-                    inputDomicilioPais.setText(C.get_domicilio().pais().orElse(null));
-                    inputDomicilioRegion.setText(C.get_domicilio().region().orElse(null));
+                    inputDomicilioDireccion1.setText(C.getDomicilio().lineaDireccion1());
+                    inputDomicilioDireccion2.setText(C.getDomicilio().lineaDireccion2().orElse(null));
+                    inputDomicilioCP.setText(C.getDomicilio().codigoPostal().orElse(null));
+                    inputDomicilioCiudad.setText(C.getDomicilio().ciudad());
+                    inputDomicilioPais.setText(C.getDomicilio().pais().orElse(null));
+                    inputDomicilioRegion.setText(C.getDomicilio().region().orElse(null));
 
-                    inputCodRepVentas.setText((C.get_cod_empl_rep_ventas() != null && C.get_cod_empl_rep_ventas().isPresent()) ? Integer.toString(C.get_cod_empl_rep_ventas().get()) : null);
-                    inputLimiteCredito.setText((C.get_limite_credito() != null && C.get_limite_credito().isPresent()) ? Double.toString(C.get_limite_credito().get()) : null);
+                    inputCodRepVentas.setText((C.getCodigoEmpleadoRepVentas() != null && C.getCodigoEmpleadoRepVentas().isPresent()) ? Integer.toString(C.getCodigoEmpleadoRepVentas().get()) : null);
+                    inputLimiteCredito.setText((C.getLimiteCredito() != null && C.getLimiteCredito().isPresent()) ? Double.toString(C.getLimiteCredito().get()) : null);
 
-                    if (C.get_tipo_documento() != null && C.get_tipo_documento().isPresent()) {
-                        if (C.get_tipo_documento().get() == TipoDocumento.DNI) {
+                    if (C.getTipoDocumento() != null && C.getTipoDocumento().isPresent()) {
+                        if (C.getTipoDocumento().get() == TipoDocumento.DNI) {
                             inputDNI.setSelected(true);
                             inputNIE.setSelected(false);
                             inputNA.setSelected(false);
@@ -147,15 +147,15 @@ public class EditarCliente extends javax.swing.JDialog {
                             inputNIE.setSelected(true);
                             inputNA.setSelected(false);
                         }
-                        inputDocumentoContenido.setText(C.get_dni().orElse(null));
+                        inputDocumentoContenido.setText(C.getDocumento().orElse(null));
                     } else {
                         inputDNI.setSelected(false);
                         inputNIE.setSelected(false);
                         inputNA.setSelected(true);
                     }
 
-                    inputEmail.setText(C.get_email() != null ? C.get_email().orElse(null) : null);
-                    inputContrasena.setText(C.get_contrasena() != null ? C.get_contrasena().orElse(null) : null);
+                    inputEmail.setText(C.getEmail() != null ? C.getEmail().orElse(null) : null);
+                    inputContrasena.setText(C.getContrasena() != null ? C.getContrasena().orElse(null) : null);
 
                     codigoBien = nombreBien = telefonoBien = faxBien = direccion1Bien = ciudadBien = true;
                     updatearMsjError();
@@ -1486,19 +1486,19 @@ public class EditarCliente extends javax.swing.JDialog {
                                                     inputContactoFax.getText(),
                                                     inputDomicilioDireccion1.getText(),
                                                     inputDomicilioCiudad.getText())
-                                                    .con_nombre_de_contacto(StringUtils.isBlank(inputContactoNombre.getText()) ? null : inputContactoNombre.getText())
-                                                    .con_apellido_de_contacto(StringUtils.isBlank(inputContactoApellido.getText()) ? null : inputContactoApellido.getText())
-                                                    .con_linea_direccion2(StringUtils.isBlank(inputDomicilioDireccion2.getText()) ? null : inputDomicilioDireccion2.getText())
-                                                    .con_region(StringUtils.isBlank(inputDomicilioRegion.getText()) ? null : inputDomicilioRegion.getText())
-                                                    .con_pais(StringUtils.isBlank(inputDomicilioPais.getText()) ? null : inputDomicilioPais.getText())
-                                                    .con_codigo_postal(StringUtils.isBlank(inputDomicilioCP.getText()) ? null : inputDomicilioCP.getText())
-                                                    .con_cod_empl_rep_ventas(StringUtils.isBlank(inputCodRepVentas.getText()) ? null :
-                                                            Integer.parseInt(inputCodRepVentas.getText()))
-                                                    .con_limite_credito(StringUtils.isBlank(inputLimiteCredito.getText()) ? null :
+                                                    .conNombreDeContacto(StringUtils.isBlank(inputContactoNombre.getText()) ? null : inputContactoNombre.getText())
+                                                    .conApellidoDeContacto(StringUtils.isBlank(inputContactoApellido.getText()) ? null : inputContactoApellido.getText())
+                                                    .conLineaDireccion2(StringUtils.isBlank(inputDomicilioDireccion2.getText()) ? null : inputDomicilioDireccion2.getText())
+                                                    .conRegion(StringUtils.isBlank(inputDomicilioRegion.getText()) ? null : inputDomicilioRegion.getText())
+                                                    .conPais(StringUtils.isBlank(inputDomicilioPais.getText()) ? null : inputDomicilioPais.getText())
+                                                    .conCodigoPostal(StringUtils.isBlank(inputDomicilioCP.getText()) ? null : inputDomicilioCP.getText())
+                                                    .conEmpleadoRepVentas(StringUtils.isBlank(inputCodRepVentas.getText()) ? null :
+                                                            app.daos.empleados().uno(Integer.parseInt(inputCodRepVentas.getText())))
+                                                    .conLimiteCredito(StringUtils.isBlank(inputLimiteCredito.getText()) ? null :
                                                             Double.parseDouble(inputLimiteCredito.getText().replace(',', '.')))
-                                                    .con_documento(inputDNI.isSelected() ? TipoDocumento.DNI : (inputNIE.isSelected() ? TipoDocumento.NIE : null),
+                                                    .conDocumento(inputDNI.isSelected() ? TipoDocumento.DNI : (inputNIE.isSelected() ? TipoDocumento.NIE : null),
                                                             !inputNA.isSelected() ? inputDocumentoContenido.getText() : null)
-                                                    .con_email(StringUtils.isBlank(inputEmail.getText()) ? null : inputEmail.getText(), 
+                                                    .conEmail(StringUtils.isBlank(inputEmail.getText()) ? null : inputEmail.getText(), 
                                                                inputContrasena.getPassword().length == 0 ? null : new String(inputContrasena.getPassword()))
                                                     .build();
 

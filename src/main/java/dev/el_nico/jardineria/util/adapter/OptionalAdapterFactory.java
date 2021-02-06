@@ -29,6 +29,8 @@ public class OptionalAdapterFactory implements TypeAdapterFactory {
             // a lo mejor esto se puede hacer una clase propia para extender y añadir
             // como parametro el tipo generico del optional y asi no tener que usar 
             // raw type pero bueno eso es trabajo para el nico de mañana
+            // 
+            // pues no se puede, no
             return new TypeAdapter<T>() {
 
                 @Override

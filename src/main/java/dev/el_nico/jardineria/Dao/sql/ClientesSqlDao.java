@@ -17,15 +17,17 @@ import dev.el_nico.jardineria.modelo.Cliente;
 
 public class ClientesSqlDao implements IDao<Cliente> {
 
-    private Connection conn;
+    private Connection sql;
+    private ConexionJardineria daos;
 
-    public ClientesSqlDao(Connection conn) {
-        this.conn = conn;
+    public ClientesSqlDao(ConexionJardineria daos) {
+        this.daos = daos;
+        sql = daos.getConnection();
     }
 
     @Override
     public Optional<Cliente> uno(Object id) {
-        try (PreparedStatement stat = conn.prepareStatement("select * from cliente where codigo_cliente=?;")) {
+        try (PreparedStatement stat = sql.prepareStatement("select * from cliente where codigo_cliente=?;")) {
             stat.setInt(1, (int)id);
             ResultSet res = stat.executeQuery();
             if (res.next()) {
@@ -39,7 +41,7 @@ public class ClientesSqlDao implements IDao<Cliente> {
 
     @Override
     public List<Cliente> todos() {
-        try (PreparedStatement stat = conn.prepareStatement("select * from cliente;")) {
+        try (PreparedStatement stat = sql.prepareStatement("select * from cliente;")) {
             ResultSet resultados = stat.executeQuery();
             List<Cliente> lista = new ArrayList<>();
             while (resultados.next()) {
@@ -55,22 +57,22 @@ public class ClientesSqlDao implements IDao<Cliente> {
 
     @Override
     public void guardar(Cliente t) throws ExcepcionCodigoYaExistente, SQLException {
-        try (PreparedStatement count_cod_cliente = conn.prepareStatement("select count(*) from cliente where codigo_cliente=?;");
-             PreparedStatement insert_into_cliente = conn.prepareStatement("insert into cliente values(?,?,?,?,?,?,?,?,?,?,?,?,?,?);")) {
+        try (PreparedStatement count_cod_cliente = sql.prepareStatement("select count(*) from cliente where codigo_cliente=?;");
+             PreparedStatement insert_into_cliente = sql.prepareStatement("insert into cliente values(?,?,?,?,?,?,?,?,?,?,?,?,?,?);")) {
             
-            count_cod_cliente.setInt(1, t.get_codigo());
+            count_cod_cliente.setInt(1, t.getCodigo());
             ResultSet rs = count_cod_cliente.executeQuery();
             if (rs.next()) {
                 if (rs.getInt(1) != 0) {
                     // ya hay un cliente con el codigo pedido tal
-                    throw new ExcepcionCodigoYaExistente("Ya hay un cliente con código " + t.get_codigo());
+                    throw new ExcepcionCodigoYaExistente("Ya hay un cliente con código " + t.getCodigo());
                 } else {
 
                     // esto es culpa de java me niego a arreglarlo
 
-                    insert_into_cliente.setInt(1, t.get_codigo());
-                    insert_into_cliente.setString(2, t.get_nombre());
-                    t.get_contacto().nombre().ifPresentOrElse(n -> {
+                    insert_into_cliente.setInt(1, t.getCodigo());
+                    insert_into_cliente.setString(2, t.getNombre());
+                    t.getContacto().nombre().ifPresentOrElse(n -> {
                         try {
                             insert_into_cliente.setString(3, n);
                         } catch (SQLException e) {
@@ -85,7 +87,7 @@ public class ClientesSqlDao implements IDao<Cliente> {
                             e.printStackTrace();
                         }
                     });
-                    t.get_contacto().apellido().ifPresentOrElse(a-> {
+                    t.getContacto().apellido().ifPresentOrElse(a-> {
                         try {
                             insert_into_cliente.setString(4, a);
                         } catch (SQLException e) {
@@ -100,10 +102,10 @@ public class ClientesSqlDao implements IDao<Cliente> {
                             e.printStackTrace();
                         }
                     });
-                    insert_into_cliente.setString(5, t.get_contacto().telefono());
-                    insert_into_cliente.setString(6, t.get_contacto().fax());
-                    insert_into_cliente.setString(7, t.get_domicilio().direccion1());
-                    t.get_domicilio().direccion2().ifPresentOrElse(d-> {
+                    insert_into_cliente.setString(5, t.getContacto().telefono());
+                    insert_into_cliente.setString(6, t.getContacto().fax());
+                    insert_into_cliente.setString(7, t.getDomicilio().lineaDireccion1());
+                    t.getDomicilio().lineaDireccion2().ifPresentOrElse(d-> {
                         try {
                             insert_into_cliente.setString(8, d);
                         } catch (SQLException e) {
@@ -118,8 +120,8 @@ public class ClientesSqlDao implements IDao<Cliente> {
                             e.printStackTrace();
                         }
                     });
-                    insert_into_cliente.setString(9, t.get_domicilio().ciudad());
-                    t.get_domicilio().region().ifPresentOrElse(r-> {
+                    insert_into_cliente.setString(9, t.getDomicilio().ciudad());
+                    t.getDomicilio().region().ifPresentOrElse(r-> {
                         try {
                             insert_into_cliente.setString(10, r);
                         } catch (SQLException e) {
@@ -134,7 +136,7 @@ public class ClientesSqlDao implements IDao<Cliente> {
                             e.printStackTrace();
                         }
                     });
-                    t.get_domicilio().pais().ifPresentOrElse(p-> {
+                    t.getDomicilio().pais().ifPresentOrElse(p-> {
                         try {
                             insert_into_cliente.setString(11, p);
                         } catch (SQLException e) {
@@ -149,7 +151,7 @@ public class ClientesSqlDao implements IDao<Cliente> {
                             e.printStackTrace();
                         }
                     });
-                    t.get_domicilio().cp().ifPresentOrElse(c-> {
+                    t.getDomicilio().codigoPostal().ifPresentOrElse(c-> {
                         try {
                             insert_into_cliente.setString(12, c);
                         } catch (SQLException e) {
@@ -164,7 +166,7 @@ public class ClientesSqlDao implements IDao<Cliente> {
                             e.printStackTrace();
                         }
                     });
-                    t.get_cod_empl_rep_ventas().ifPresentOrElse(c-> {
+                    t.getCodigoEmpleadoRepVentas().ifPresentOrElse(c-> {
                         try {
                             insert_into_cliente.setInt(13, c);
                         } catch (SQLException e) {
@@ -179,7 +181,7 @@ public class ClientesSqlDao implements IDao<Cliente> {
                             e.printStackTrace();
                         }
                     });
-                    t.get_limite_credito().ifPresentOrElse(L-> {
+                    t.getLimiteCredito().ifPresentOrElse(L-> {
                         try {
                             insert_into_cliente.setDouble(14, L);
                         } catch (SQLException e) {
@@ -225,7 +227,7 @@ public class ClientesSqlDao implements IDao<Cliente> {
      * @throws SQLException Si no se ha llamado a next() antes de invocar a esta función, o nosequé otras
      * movidas le puedan disgustar a esto.
      */
-    private static Optional<Cliente> sacarClienteDeResultSet(ResultSet sqlQuery) throws SQLException {
+    private Optional<Cliente> sacarClienteDeResultSet(ResultSet sqlQuery) throws SQLException {
 
         if (sqlQuery != null) {
             int codigo = sqlQuery.getInt("codigo_cliente");
@@ -246,10 +248,10 @@ public class ClientesSqlDao implements IDao<Cliente> {
             Cliente cliente;
             try {
                 cliente = new Cliente.Builder(codigo, nombre, telefono, fax, linea_dir1, ciudad)
-                        .con_nombre_de_contacto(cto_nombre).con_apellido_de_contacto(cto_apellido)
-                        .con_linea_direccion2(linea_dir2).con_region(region).con_pais(pais)
-                        .con_codigo_postal(codigo_postal).con_cod_empl_rep_ventas(rep_ventas)
-                        .con_limite_credito(lim_cred).build();
+                        .conNombreDeContacto(cto_nombre).conApellidoDeContacto(cto_apellido)
+                        .conLineaDireccion2(linea_dir2).conRegion(region).conPais(pais).conCodigoPostal(codigo_postal)
+                        .conEmpleadoRepVentas(daos.empleados().uno(rep_ventas).orElse(null)).conLimiteCredito(lim_cred)
+                        .buildOrThrow();
             } catch (ExcepcionDatoNoValido | ExcepcionFormatoIncorrecto e) {
                 cliente = null;
             }

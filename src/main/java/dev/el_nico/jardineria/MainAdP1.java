@@ -4,13 +4,14 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
+
 import dev.el_nico.jardineria.dao.sql.ConexionJardineria;
 import dev.el_nico.jardineria.excepciones.ExcepcionCodigoYaExistente;
 import dev.el_nico.jardineria.excepciones.ExcepcionDatoNoValido;
 import dev.el_nico.jardineria.excepciones.ExcepcionFormatoIncorrecto;
 import dev.el_nico.jardineria.modelo.Cliente;
 import dev.el_nico.jardineria.modelo.Producto;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Clase Main de la práctica 1ª de Acceso a Datos, donde
@@ -77,17 +78,20 @@ public class MainAdP1 {
         // aqui hay producto si o si
         Producto producto = optproducto.get();
 
-        pedirString("codigo_producto", true);
-        pedirString("nombre", true);
-        pedirString("gama", true);
-        pedirString("dimensiones", true);
-        pedirString("proveedor", true);
-        pedirString("descripcion", true);
-        pedirEntero("cantidad_en_stock", true);
-        pedirDouble("precio_venta");
-        pedirDouble("precio_proveedor");
+        Producto.Builder mod = new Producto.Builder(producto);
+        String nuevo_codigo = pedirString("codigo_producto", true);
+        String nuevo_nombre = pedirString("nombre", true);
+        String nueva_gama = pedirString("gama", true);
+        String nuevas_dimen = pedirString("dimensiones", true);
+        String nuevo_proveedor = pedirString("proveedor", true);
+        String nueva_desc = pedirString("descripcion", true);
+        Integer nueva_cantidad = pedirEntero("cantidad_en_stock", true);
+        Double nuevo_precio_venta = pedirDouble("precio_venta");
+        Double nuevo_precio_prov = pedirDouble("precio_proveedor");
 
-        c.productos().modificar(producto, params);
+        if (nuevo_codigo != null) mod. // TODO estaba haciendo esto
+
+        c.productos().modificar(producto);
     }
 
     private static void pedirPalabraYBuscarClientes(ConexionJardineria c) {
@@ -95,12 +99,12 @@ public class MainAdP1 {
         List<Cliente> clientes = c.clientes().todos();
         clientes.removeIf(
             cli -> {
-                return !cli.get_nombre().toLowerCase().contains(criterio)
-                    && !cli.get_contacto().nombre().orElse("").toLowerCase().contains(criterio)
-                    && !cli.get_contacto().apellido().orElse("").toLowerCase().contains(criterio);
+                return !cli.getNombre().toLowerCase().contains(criterio)
+                    && !cli.getContacto().nombre().orElse("").toLowerCase().contains(criterio)
+                    && !cli.getContacto().apellido().orElse("").toLowerCase().contains(criterio);
             }
         );
-        clientes.sort((c1, c2) -> c1.get_nombre().compareTo(c2.get_nombre()));
+        clientes.sort((c1, c2) -> c1.getNombre().compareTo(c2.getNombre()));
 
         if (clientes.size() > 0) System.out.println();
         for (Cliente cliente : clientes) {
@@ -110,7 +114,7 @@ public class MainAdP1 {
 
     private static void mostrarTodosLosClientes(ConexionJardineria c) {
         List<Cliente> clientes = c.clientes().todos();
-        clientes.sort((c1, c2) -> c1.get_nombre().compareTo(c2.get_nombre()));
+        clientes.sort((c1, c2) -> c1.getNombre().compareTo(c2.getNombre()));
         
         if (clientes.size() > 0) System.out.println();
         for (Cliente cliente : clientes) {
@@ -146,11 +150,11 @@ public class MainAdP1 {
         Cliente cliente;
         try {
             cliente = new Cliente.Builder(codigo_cliente, nombre_cliente, telefono, fax, linea_direccion1,
-                    ciudad).con_nombre_de_contacto(nombre_contacto).con_apellido_de_contacto(apellido_contacto)
-                            .con_linea_direccion2(linea_direccion2).con_region(region).con_pais(pais)
-                            .con_codigo_postal(codigo_postal)
-                            .con_cod_empl_rep_ventas(rep_ventas)
-                            .con_limite_credito(limite_credito).build();
+                    ciudad).conNombreDeContacto(nombre_contacto).conApellidoDeContacto(apellido_contacto)
+                            .conLineaDireccion2(linea_direccion2).conRegion(region).conPais(pais)
+                            .conCodigoPostal(codigo_postal)
+                            .conEmpleadoRepVentas(rep_ventas)
+                            .conLimiteCredito(limite_credito).build();
             c.clientes().guardar(cliente);
             System.out.println("\nCliente añadido OK!\n===================");
         } catch (ExcepcionCodigoYaExistente e) {

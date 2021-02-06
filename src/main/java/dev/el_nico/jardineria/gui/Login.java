@@ -20,7 +20,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JRootPane;
 import javax.swing.border.LineBorder;
 
-import dev.el_nico.jardineria.dao.DaoHolder;
 import dev.el_nico.jardineria.dao.gson.ClientesGsonDao;
 import dev.el_nico.jardineria.dao.gson.PedidosGsonDao;
 import dev.el_nico.jardineria.dao.sql.ConexionJardineria;

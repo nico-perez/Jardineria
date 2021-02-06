@@ -59,8 +59,8 @@ public class ClientesGsonDao implements IDao<Cliente> {
                         // Asegúrase de que el cliente deserializado es válido, 
                         // ya que se podría haber escrito algún valor sin sentido
                         // con un editor de texto, por ejemplo.
-                        Cliente chequeado = new Cliente.Builder(arrayClientes[i]).build();
-                        clientes.put(chequeado.get_codigo(), chequeado);
+                        Cliente chequeado = new Cliente.Builder(arrayClientes[i]).buildOrThrow();
+                        clientes.put(chequeado.getCodigo(), chequeado);
                     } catch (ExcepcionDatoNoValido e) {
                         // Si el cliente leído no es válido, lo descarta directamente.
                         System.err.println("Un cliente deserializado no tenía datos correctos");
@@ -86,10 +86,10 @@ public class ClientesGsonDao implements IDao<Cliente> {
     public void guardar(Cliente cliente) throws ExcepcionClienteDuplicado, 
                                                 ExcepcionCodigoYaExistente {
         // Se asegura de que el cliente no está duplicado.
-        Optional<Cliente> otro = uno(cliente.get_codigo());
+        Optional<Cliente> otro = uno(cliente.getCodigo());
         if (otro.isPresent()) {
-            Cliente.Contacto cto_este = cliente.get_contacto(),
-                             cto_otro = otro.get().get_contacto();
+            Cliente.Contacto cto_este = cliente.getContacto(),
+                             cto_otro = otro.get().getContacto();
             if (cto_otro.nombre().orElse("").equals(cto_este.nombre().orElse("")) &&
                 cto_otro.apellido().orElse("").equals(cto_este.apellido().orElse("")) &&
                 cto_otro.telefono().equals(cto_este.telefono())) {
@@ -105,7 +105,7 @@ public class ClientesGsonDao implements IDao<Cliente> {
 
             // Si el cliente es válido, sobrescribe el archivo json
 
-            clientes.put(cliente.get_codigo(), cliente);
+            clientes.put(cliente.getCodigo(), cliente);
             
             Gson gson = new GsonBuilder().registerTypeAdapterFactory(new OptionalAdapterFactory()).create();
 

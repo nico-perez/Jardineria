@@ -1,9 +1,8 @@
 package dev.el_nico.jardineria.excepciones;
 
-public class ExcepcionClienteDuplicado extends Exception {
-    private static final long serialVersionUID = 3L;
-    
-    public ExcepcionClienteDuplicado(String msj) {
-        super(msj);
-    }
+public class ExcepcionClienteDuplicado extends NicoExcepcion {
+
+    private static final long serialVersionUID = 366251447307226481L;
+
+    public ExcepcionClienteDuplicado(String msj) { super(msj); }
 }

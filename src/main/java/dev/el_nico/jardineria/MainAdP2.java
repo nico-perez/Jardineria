@@ -17,7 +17,7 @@ import dev.el_nico.jardineria.excepciones.ExcepcionCodigoYaExistente;
 import dev.el_nico.jardineria.excepciones.ExcepcionDatoNoValido;
 import dev.el_nico.jardineria.excepciones.ExcepcionFormatoIncorrecto;
 import dev.el_nico.jardineria.modelo.Cliente;
-import dev.el_nico.jardineria.modelo.Detalle;
+import dev.el_nico.jardineria.modelo.DetallePedido;
 import dev.el_nico.jardineria.modelo.Pedido;
 import dev.el_nico.jardineria.modelo.Producto;
 import dev.el_nico.jardineria.util.SesionHibernate;
@@ -94,25 +94,25 @@ public class MainAdP2 {
         List<Pedido> pedidos = s.pedidos().todos();
 
         @SuppressWarnings("unchecked")
-        List<Detalle> detalles = session.createQuery("from Detalle").list();
+        List<DetallePedido> detalles = session.createQuery("from Detalle").list();
 
         Map<Integer, Integer> ventas = new TreeMap<>();
         Map<Integer, Double> map = new TreeMap<>();
         for (Cliente c : clientes) {
-            if (c.get_cod_empl_rep_ventas().isPresent()) {
-                map.put(c.get_cod_empl_rep_ventas().get(), 0.0);
-                ventas.put(c.get_cod_empl_rep_ventas().get(), 0);
+            if (c.getCodigoEmpleadoRepVentas().isPresent()) {
+                map.put(c.getCodigoEmpleadoRepVentas().get(), 0.0);
+                ventas.put(c.getCodigoEmpleadoRepVentas().get(), 0);
             }
             for (Pedido p : pedidos) {
                 Calendar fechaPedido = p.get_fecha().pedido();
-                if (p.get_codigo_cliente() == c.get_codigo() 
+                if (p.get_codigo_cliente() == c.getCodigo() 
                         && fechaPedido.get(Calendar.MONTH) == mes 
                         && fechaPedido.get(Calendar.YEAR) == anio) {
-                    for (Detalle d : detalles) {
-                        if (d.getCodigo_pedido() == p.get_codigo() && c.get_cod_empl_rep_ventas().isPresent()) {
-                            map.put(c.get_cod_empl_rep_ventas().get(), map.get(c.get_cod_empl_rep_ventas().get()) + d.getCantidad() * d.getPrecio_unidad());
+                    for (DetallePedido d : detalles) {
+                        if (d.getCodigo_pedido() == p.get_codigo() && c.getCodigoEmpleadoRepVentas().isPresent()) {
+                            map.put(c.getCodigoEmpleadoRepVentas().get(), map.get(c.getCodigoEmpleadoRepVentas().get()) + d.getCantidad() * d.getPrecio_unidad());
                             if (d.getNumero_linea() == 1) {
-                                ventas.put(c.get_cod_empl_rep_ventas().get(), 1 + ventas.get(c.get_cod_empl_rep_ventas().get()));
+                                ventas.put(c.getCodigoEmpleadoRepVentas().get(), 1 + ventas.get(c.getCodigoEmpleadoRepVentas().get()));
                             }
                         }
                     }
@@ -146,7 +146,7 @@ public class MainAdP2 {
                 return;
             }
         } while (!s.clientes().uno(codigo).isPresent());
-        List<Detalle> detalles = session.createQuery("from Detalle where codigo_pedido in (from Pedido p where codigo_cliente=:c) order by codigo_pedido, numero_linea").setParameter("c", codigo).list();
+        List<DetallePedido> detalles = session.createQuery("from Detalle where codigo_pedido in (from Pedido p where codigo_cliente=:c) order by codigo_pedido, numero_linea").setParameter("c", codigo).list();
         List<Producto> productos = s.productos().todos();
 
         double subtotal = 0.0;
@@ -156,7 +156,7 @@ public class MainAdP2 {
         String fechastring = "";
 
         System.out.println();
-        for (Detalle d : detalles) {
+        for (DetallePedido d : detalles) {
 
             Optional<Pedido> fecha = s.pedidos().uno(d.getCodigo_pedido());
             if (fecha.isPresent()) {
@@ -176,7 +176,7 @@ public class MainAdP2 {
             }
 
             System.out.print(d);
-            Producto este = productos.stream().filter(p -> p.getCodigo_producto().equals(d.getCodigo_producto())).findAny().orElse(null);
+            Producto este = productos.stream().filter(p -> p.getCodigoProducto().equals(d.getCodigo_producto())).findAny().orElse(null);
             
             if (este != null) {
                 System.out.println(" | Nombre: " + este.getNombre() + " | Gama: " + este.getGama());
@@ -215,6 +215,7 @@ public class MainAdP2 {
 
         // aqui hay producto si o si
         Producto producto = optproducto.get();
+        
         producto.setNombre(pedirString("nombre", true));
         producto.setGama(pedirString("gama", true));
         producto.setDimensiones(pedirString("dimensiones", true));
@@ -242,12 +243,12 @@ public class MainAdP2 {
         List<Cliente> clientes = c.clientes().todos();
         clientes.removeIf(
             cli -> {
-                return !cli.get_nombre().toLowerCase().contains(criterio)
-                    && !cli.get_contacto().nombre().orElse("").toLowerCase().contains(criterio)
-                    && !cli.get_contacto().apellido().orElse("").toLowerCase().contains(criterio);
+                return !cli.getNombre().toLowerCase().contains(criterio)
+                    && !cli.getContacto().nombre().orElse("").toLowerCase().contains(criterio)
+                    && !cli.getContacto().apellido().orElse("").toLowerCase().contains(criterio);
             }
         );
-        clientes.sort((c1, c2) -> c1.get_nombre().compareTo(c2.get_nombre()));
+        clientes.sort((c1, c2) -> c1.getNombre().compareTo(c2.getNombre()));
 
         if (clientes.size() > 0) System.out.println();
         for (Cliente cliente : clientes) {
@@ -257,7 +258,7 @@ public class MainAdP2 {
 
     private static void mostrarTodosLosClientes(ConexJardineriaHibernate c) {
         List<Cliente> clientes = c.clientes().todos();
-        clientes.sort((c1, c2) -> c1.get_nombre().compareTo(c2.get_nombre()));
+        clientes.sort((c1, c2) -> c1.getNombre().compareTo(c2.getNombre()));
         
         if (clientes.size() > 0) System.out.println();
         for (Cliente cliente : clientes) {
@@ -300,11 +301,11 @@ public class MainAdP2 {
         Cliente cliente;
         try {
             cliente = new Cliente.Builder(codigo_cliente, nombre_cliente, telefono, fax, linea_direccion1,
-                    ciudad).con_nombre_de_contacto(nombre_contacto).con_apellido_de_contacto(apellido_contacto)
-                            .con_linea_direccion2(linea_direccion2).con_region(region).con_pais(pais)
-                            .con_codigo_postal(codigo_postal)
-                            .con_cod_empl_rep_ventas(rep_ventas)
-                            .con_limite_credito(limite_credito).build();
+                    ciudad).conNombreDeContacto(nombre_contacto).conApellidoDeContacto(apellido_contacto)
+                            .conLineaDireccion2(linea_direccion2).conRegion(region).conPais(pais)
+                            .conCodigoPostal(codigo_postal)
+                            .conEmpleadoRepVentas(rep_ventas)
+                            .conLimiteCredito(limite_credito).build();
             c.clientes().guardar(cliente);
             System.out.println("\nCliente añadido OK!\n===================");
         } catch (ExcepcionCodigoYaExistente e) {

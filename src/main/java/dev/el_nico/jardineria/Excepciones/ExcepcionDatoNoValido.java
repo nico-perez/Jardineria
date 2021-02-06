@@ -1,9 +1,9 @@
 package dev.el_nico.jardineria.excepciones;
 
-public class ExcepcionDatoNoValido extends Exception {
-    private static final long serialVersionUID = 1L;
+public class ExcepcionDatoNoValido extends NicoExcepcion {
 
-    public ExcepcionDatoNoValido(String msj) {
-        super(msj);
-    }
+    private static final long serialVersionUID = -5943072520861989207L;
+
+    public ExcepcionDatoNoValido(String msj) { super(msj); }
+
 }

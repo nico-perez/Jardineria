@@ -19,15 +19,19 @@ import dev.el_nico.jardineria.modelo.Pedido;
 
 public class PedidosSqlDao implements IDao<Pedido> {
 
-    private Connection conn;
+    private Connection sql;
 
-    public PedidosSqlDao(Connection conn) {
-        this.conn = conn;
+    @SuppressWarnings("unused")
+    private ConexionJardineria daos;
+
+    public PedidosSqlDao(ConexionJardineria daos) {
+        this.daos = daos;
+        sql = daos.getConnection();
     }
 
     @Override
     public Optional<Pedido> uno(Object id) {
-        try (PreparedStatement stat = conn.prepareStatement("select * from pedido where codigo_pedido=?;")) {
+        try (PreparedStatement stat = sql.prepareStatement("select * from pedido where codigo_pedido=?;")) {
             stat.setInt(1, (int)id);
             ResultSet res = stat.executeQuery();
             if (res.next()) {
@@ -41,7 +45,7 @@ public class PedidosSqlDao implements IDao<Pedido> {
 
     @Override
     public List<Pedido> todos() {
-        try (PreparedStatement stat = conn.prepareStatement("select * from pedido;")) {
+        try (PreparedStatement stat = sql.prepareStatement("select * from pedido;")) {
             ResultSet resultados = stat.executeQuery();
             List<Pedido> lista = new ArrayList<>();
             while (resultados.next()) {
@@ -57,9 +61,9 @@ public class PedidosSqlDao implements IDao<Pedido> {
     @Override
     public void guardar(Pedido t) throws Exception {
         
-        try (PreparedStatement count_cod_pedido = conn.prepareStatement("select count(*) from pedido where codigo_pedido=?;");
-             PreparedStatement count_cod_cliente = conn.prepareStatement("select count(*) from cliente where codigo_cliente=?;");
-             PreparedStatement insert_into_pedido = conn.prepareStatement("insert into pedido values(?,?,?,?,?,?,?);")) {
+        try (PreparedStatement count_cod_pedido = sql.prepareStatement("select count(*) from pedido where codigo_pedido=?;");
+             PreparedStatement count_cod_cliente = sql.prepareStatement("select count(*) from cliente where codigo_cliente=?;");
+             PreparedStatement insert_into_pedido = sql.prepareStatement("insert into pedido values(?,?,?,?,?,?,?);")) {
             count_cod_pedido.setInt(1, t.get_codigo());
             ResultSet rs = count_cod_pedido.executeQuery();
             if (rs.next()) {
@@ -126,7 +130,7 @@ public class PedidosSqlDao implements IDao<Pedido> {
         Optional<Pedido> p = uno(t.get_codigo());
         if (p.isPresent() && p.get().equals(t)) {
             // eliminar
-            try (PreparedStatement ps = conn.prepareStatement("delete from pedido where codigo_pedido=?;")) {
+            try (PreparedStatement ps = sql.prepareStatement("delete from pedido where codigo_pedido=?;")) {
                 ps.setInt(1, t.get_codigo());
                 ps.executeUpdate();
             } catch (SQLException e) {
@@ -137,7 +141,7 @@ public class PedidosSqlDao implements IDao<Pedido> {
         }
     }
     
-    private static Optional<Pedido> sacarPedidoDeResultSet(ResultSet sqlQuery) throws SQLException {
+    private Optional<Pedido> sacarPedidoDeResultSet(ResultSet sqlQuery) throws SQLException {
         if (sqlQuery != null) {
             
             int codigo_pedido = sqlQuery.getInt("codigo_pedido");

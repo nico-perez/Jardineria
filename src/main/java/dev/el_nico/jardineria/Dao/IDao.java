@@ -31,7 +31,7 @@ public interface IDao<T> { // DAO
     void guardar(T t) throws Exception;
 
     /**
-     * TODO No estoy seguro de esta :/
+     * Modifica un objeto del Dao.
      * @param t
      * @param params
      */
