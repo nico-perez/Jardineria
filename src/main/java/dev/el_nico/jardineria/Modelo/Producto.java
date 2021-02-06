@@ -2,17 +2,24 @@ package dev.el_nico.jardineria.modelo;
 
 import java.util.Optional;
 
-import dev.el_nico.jardineria.excepciones.ExcepcionDatoNoValido;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
-public class Producto {
-    private String codigo_producto;
-    private String nombre;
-    private String gama;
+import org.checkerframework.checker.nullness.qual.NonNull;
+
+import dev.el_nico.jardineria.excepciones.Assert;
+import dev.el_nico.jardineria.excepciones.ExcepcionDatoNoValido;
+import dev.el_nico.jardineria.util.AbstractBuilder;
+
+public @Entity class Producto {
+    private @NonNull @Id String codigo_producto;
+    private @NonNull String nombre;
+    private @NonNull String gama;
     private String dimensiones;
     private String proveedor;
     private String descripcion;
-    private Integer cantidad_en_stock;
-    private Double precio_venta;
+    private @NonNull Integer cantidad_en_stock;
+    private @NonNull Double precio_venta;
     private Double precio_proveedor;
 
     private Producto(String codigo_producto, String nombre, String gama, int cantidad_en_stock, double precio_venta) {
@@ -59,51 +66,74 @@ public class Producto {
         return Optional.ofNullable(precio_proveedor);
     }
 
-    public static class Builder {
-        private Producto producto;
+    public static class Builder extends AbstractBuilder<Producto> {
 
         public Builder(Producto producto) {
-            this.producto = producto;
+            este = producto;
         }
 
-        public Builder(String codigo_producto, String nombre, String gama, int cantidad_en_stock, double precio_venta) {
-            producto = new Producto(codigo_producto,
-                                    nombre,
-                                    gama,
-                                    cantidad_en_stock,
-                                    precio_venta);
+        public Builder(String codigo_producto, String nombre, String gama, Integer cantidad_en_stock, Double precio_venta) {
+            este = new Producto(codigo_producto,
+                                nombre,
+                                gama,
+                                cantidad_en_stock,
+                                precio_venta);
         }
 
-        public Builder con_dimensiones(String dimensiones) {
-            producto.dimensiones = dimensiones;
+        public Builder conCodigo(String codigo) {
+            este.codigo_producto = codigo;
             return this;
         }
 
-        public Builder con_proveedor(String proveedor) {
-            producto.proveedor = proveedor;
+        public Builder conNombre(String nombre) {
+            este.nombre = nombre;
             return this;
         }
 
-        public Builder con_descripcion(String descripcion) {
-            producto.descripcion = descripcion;
+        public Builder conGama(String gama) {
+            este.gama = gama;
             return this;
         }
 
-        public Builder con_precio_proveedor(double precio_proveedor) {
-            producto.precio_proveedor = precio_proveedor;
+        public Builder conCantidadEnStock(Integer cantidad) {
+            este.cantidad_en_stock = cantidad;
             return this;
         }
 
-        public Producto build() throws ExcepcionDatoNoValido {
-            boolean datos_necesarios_asignados = true;
-            datos_necesarios_asignados &= (producto.codigo_producto != null) 
-                                       && (producto.nombre != null)
-                                       && (producto.gama != null);
-            if (!datos_necesarios_asignados) {
-                throw new ExcepcionDatoNoValido("Ninguno de los siguientes campos puede ser null: codigo_producto, nombre, gama.");
-            }
+        public Builder conPrecioVenta(Double precio) {
+            este.precio_venta = precio;
+            return this;
+        }
 
-            return datos_necesarios_asignados ? producto : null;
+        public Builder conDimensiones(String dimensiones) {
+            este.dimensiones = dimensiones;
+            return this;
+        }
+
+        public Builder conProveedor(String proveedor) {
+            este.proveedor = proveedor;
+            return this;
+        }
+
+        public Builder conDescripcion(String descripcion) {
+            este.descripcion = descripcion;
+            return this;
+        }
+
+        public Builder conPrecioProveedor(double precio_proveedor) {
+            este.precio_proveedor = precio_proveedor;
+            return this;
+        }
+
+        public Producto buildOrThrow() throws ExcepcionDatoNoValido {
+
+            Assert.notNull("codigo_producto", este.codigo_producto);
+            Assert.notNull("nombre", este.nombre);
+            Assert.notNull("gama", este.gama);                         
+
+            // TODO comprobar varchars
+
+            return este;
         }
     }
 }

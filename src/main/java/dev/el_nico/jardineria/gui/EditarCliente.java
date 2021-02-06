@@ -1493,14 +1493,14 @@ public class EditarCliente extends javax.swing.JDialog {
                                                     .conPais(StringUtils.isBlank(inputDomicilioPais.getText()) ? null : inputDomicilioPais.getText())
                                                     .conCodigoPostal(StringUtils.isBlank(inputDomicilioCP.getText()) ? null : inputDomicilioCP.getText())
                                                     .conEmpleadoRepVentas(StringUtils.isBlank(inputCodRepVentas.getText()) ? null :
-                                                            app.daos.empleados().uno(Integer.parseInt(inputCodRepVentas.getText())))
+                                                            app.daos.empleados().uno(Integer.parseInt(inputCodRepVentas.getText())).orElse(null))
                                                     .conLimiteCredito(StringUtils.isBlank(inputLimiteCredito.getText()) ? null :
                                                             Double.parseDouble(inputLimiteCredito.getText().replace(',', '.')))
                                                     .conDocumento(inputDNI.isSelected() ? TipoDocumento.DNI : (inputNIE.isSelected() ? TipoDocumento.NIE : null),
                                                             !inputNA.isSelected() ? inputDocumentoContenido.getText() : null)
                                                     .conEmail(StringUtils.isBlank(inputEmail.getText()) ? null : inputEmail.getText(), 
                                                                inputContrasena.getPassword().length == 0 ? null : new String(inputContrasena.getPassword()))
-                                                    .build();
+                                                    .buildOrThrow();
 
                 if (C == null) {
                     // añadiendo cliente nuevo

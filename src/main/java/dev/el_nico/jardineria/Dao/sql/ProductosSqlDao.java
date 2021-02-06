@@ -112,8 +112,8 @@ public class ProductosSqlDao implements IDao<Producto> {
             Producto producto;
             try {
                 producto = new Producto.Builder(codigo_producto, nombre, gama, cantidad_en_stock, precio_venta)
-                        .con_descripcion(descripcion).con_dimensiones(dimensiones).con_proveedor(proveedor)
-                        .con_precio_proveedor(precio_proveedor).build();
+                        .conDescripcion(descripcion).conDimensiones(dimensiones).conProveedor(proveedor)
+                        .conPrecioProveedor(precio_proveedor).buildOrThrow();
             } catch (ExcepcionDatoNoValido e) {
                 producto = null;
             }

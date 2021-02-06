@@ -109,9 +109,9 @@ public class MainAdP2 {
                         && fechaPedido.get(Calendar.MONTH) == mes 
                         && fechaPedido.get(Calendar.YEAR) == anio) {
                     for (DetallePedido d : detalles) {
-                        if (d.getCodigo_pedido() == p.get_codigo() && c.getCodigoEmpleadoRepVentas().isPresent()) {
-                            map.put(c.getCodigoEmpleadoRepVentas().get(), map.get(c.getCodigoEmpleadoRepVentas().get()) + d.getCantidad() * d.getPrecio_unidad());
-                            if (d.getNumero_linea() == 1) {
+                        if (d.getCodigoPedido() == p.get_codigo() && c.getCodigoEmpleadoRepVentas().isPresent()) {
+                            map.put(c.getCodigoEmpleadoRepVentas().get(), map.get(c.getCodigoEmpleadoRepVentas().get()) + d.getCantidad() * d.getPrecioUnidad());
+                            if (d.getNumeroLinea() == 1) {
                                 ventas.put(c.getCodigoEmpleadoRepVentas().get(), 1 + ventas.get(c.getCodigoEmpleadoRepVentas().get()));
                             }
                         }
@@ -158,7 +158,7 @@ public class MainAdP2 {
         System.out.println();
         for (DetallePedido d : detalles) {
 
-            Optional<Pedido> fecha = s.pedidos().uno(d.getCodigo_pedido());
+            Optional<Pedido> fecha = s.pedidos().uno(d.getCodigoPedido());
             if (fecha.isPresent()) {
                 Calendar cal = fecha.get().get_fecha().pedido();
                 fechastring = cal.getDisplayName(Calendar.MONTH, Calendar.LONG_FORMAT, Locale.forLanguageTag("es-ES")) + " de " + cal.get(Calendar.YEAR);
@@ -166,8 +166,8 @@ public class MainAdP2 {
                 fechastring = "";
             }
 
-            if (pedidoActual != d.getCodigo_pedido()) {
-                pedidoActual = d.getCodigo_pedido();
+            if (pedidoActual != d.getCodigoPedido()) {
+                pedidoActual = d.getCodigoPedido();
                 if (subtotal > 0.0) {
                     System.out.println(" --> Subtotal: " + subtotal + " en " + fechastring  + "\n");
                     total += subtotal;
@@ -176,14 +176,14 @@ public class MainAdP2 {
             }
 
             System.out.print(d);
-            Producto este = productos.stream().filter(p -> p.getCodigoProducto().equals(d.getCodigo_producto())).findAny().orElse(null);
+            Producto este = productos.stream().filter(p -> p.getCodigoProducto().equals(d.getCodigoProducto())).findAny().orElse(null);
             
             if (este != null) {
                 System.out.println(" | Nombre: " + este.getNombre() + " | Gama: " + este.getGama());
             } else {
                 System.out.println(" | Algún error raro hay por haí porque no se ha podido encontrar el producto");
             }
-            subtotal += d.getCantidad() * d.getPrecio_unidad();
+            subtotal += d.getCantidad() * d.getPrecioUnidad();
         }
         if (subtotal > 0.0) {
             System.out.println(" --> Subtotal: " + subtotal + " en " + fechastring + "\n==========================");
@@ -216,18 +216,32 @@ public class MainAdP2 {
         // aqui hay producto si o si
         Producto producto = optproducto.get();
         
-        producto.setNombre(pedirString("nombre", true));
-        producto.setGama(pedirString("gama", true));
-        producto.setDimensiones(pedirString("dimensiones", true));
-        producto.setProveedor(pedirString("proveedor", true));
-        producto.setDescripcion(pedirString("descripcion", true));
-        producto.setCantidad_en_stock(pedirEntero("cantidad_en_stock", true));
-        producto.setPrecio_venta(pedirDouble("precio_venta"));
-        producto.setPrecio_proveedor(pedirDouble("precio_proveedor"));
+        Producto.Builder modificador = new Producto.Builder(producto);
+        String nombre = pedirString("nombre", true),
+               gama = pedirString("gama", true),
+               dimensiones = pedirString("dimensiones", true),
+               proveedor = pedirString("proveedor", true),
+               descripcion = pedirString("descripcion", true);
+        Integer cantidad = pedirEntero("cantidad_en_stock", true);
+        Double precioventa = pedirDouble("precio_venta"),
+               precioprov = pedirDouble("precio_proveedor");
+
+        if (nombre != null) modificador.conNombre(nombre);
+        if (gama != null) modificador.conGama(gama);
+        if (dimensiones != null) modificador.conDimensiones(dimensiones);
+        if (proveedor != null) modificador.conProveedor(proveedor);
+        if (descripcion !=null) modificador.conDescripcion(descripcion);
+        if (cantidad != null) modificador.conCantidadEnStock(cantidad);
+        if (precioventa != null) modificador.conPrecioVenta(precioventa);
+        if (precioprov != null) modificador.conPrecioProveedor(precioprov);
+
         try {
-            c.productos().modificar(producto);
+            c.productos().modificar(modificador.buildOrThrow());
         } catch (HibernateException e) {
+            e.printStackTrace();
             System.out.println("No se ha podido modificar el producto. Es probable que haya fallado el constraint Gama");
+        } catch (ExcepcionDatoNoValido e) {
+            e.printStackTrace();
         }
     }
 
