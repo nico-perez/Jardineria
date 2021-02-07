@@ -2,7 +2,7 @@ package dev.el_nico.jardineria.util;
 
 import java.util.Optional;
 
-import dev.el_nico.jardineria.excepciones.NicoExcepcion;
+import dev.el_nico.jardineria.excepciones1.NicoExcepcion;
 
 /**
  * Builder para hacerme la vida más fácil, pero al gfinal no

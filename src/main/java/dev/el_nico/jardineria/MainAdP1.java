@@ -6,12 +6,12 @@ import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 
-import dev.el_nico.jardineria.dao.sql.ConexionJardineria;
-import dev.el_nico.jardineria.excepciones.ExcepcionCodigoYaExistente;
-import dev.el_nico.jardineria.excepciones.ExcepcionDatoNoValido;
-import dev.el_nico.jardineria.excepciones.ExcepcionFormatoIncorrecto;
-import dev.el_nico.jardineria.modelo.Cliente;
-import dev.el_nico.jardineria.modelo.Producto;
+import dev.el_nico.jardineria.dao1.sql.ConexionJardineria;
+import dev.el_nico.jardineria.excepciones1.ExcepcionCodigoYaExistente;
+import dev.el_nico.jardineria.excepciones1.ExcepcionDatoNoValido;
+import dev.el_nico.jardineria.excepciones1.ExcepcionFormatoIncorrecto;
+import dev.el_nico.jardineria.modelo1.Cliente;
+import dev.el_nico.jardineria.modelo1.Producto;
 
 /**
  * Clase Main de la práctica 1ª de Acceso a Datos, donde

@@ -25,11 +25,11 @@ import javax.swing.table.DefaultTableModel;
 
 import org.apache.commons.lang3.StringUtils;
 
-import dev.el_nico.jardineria.excepciones.ExcepcionCodigoYaExistente;
-import dev.el_nico.jardineria.excepciones.ExcepcionDatoNoValido;
-import dev.el_nico.jardineria.excepciones.ExcepcionFormatoIncorrecto;
-import dev.el_nico.jardineria.modelo.Cliente;
-import dev.el_nico.jardineria.modelo.TipoDocumento;
+import dev.el_nico.jardineria.excepciones1.ExcepcionCodigoYaExistente;
+import dev.el_nico.jardineria.excepciones1.ExcepcionDatoNoValido;
+import dev.el_nico.jardineria.excepciones1.ExcepcionFormatoIncorrecto;
+import dev.el_nico.jardineria.modelo1.Cliente;
+import dev.el_nico.jardineria.modelo1.TipoDocumento;
 
 /**
  *

@@ -5,8 +5,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
 
-import dev.el_nico.jardineria.excepciones.ExcepcionDatoNoValido;
-import dev.el_nico.jardineria.excepciones.ExcepcionFormatoIncorrecto;
+import dev.el_nico.jardineria.excepciones1.ExcepcionDatoNoValido;
+import dev.el_nico.jardineria.excepciones1.ExcepcionFormatoIncorrecto;
+import dev.el_nico.jardineria.modelo1.Cliente;
+import dev.el_nico.jardineria.modelo1.TipoDocumento;
 
 public class ClienteTest {
 

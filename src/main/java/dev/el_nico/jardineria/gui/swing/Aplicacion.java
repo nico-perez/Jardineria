@@ -26,10 +26,10 @@ import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
 
-import dev.el_nico.jardineria.dao.DaoHolder;
-import dev.el_nico.jardineria.dao.sql.ConexionJardineria;
-import dev.el_nico.jardineria.modelo.Cliente;
-import dev.el_nico.jardineria.modelo.Pedido;
+import dev.el_nico.jardineria.dao1.DaoHolder;
+import dev.el_nico.jardineria.dao1.sql.ConexionJardineria;
+import dev.el_nico.jardineria.modelo1.Cliente;
+import dev.el_nico.jardineria.modelo1.Pedido;
 
 /**
  *

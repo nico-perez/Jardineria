@@ -5,6 +5,11 @@ import java.sql.SQLException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
+import dev.el_nico.jardineria.dao1.sql.ClientesSqlDao;
+import dev.el_nico.jardineria.dao1.sql.ConexionJardineria;
+import dev.el_nico.jardineria.dao1.sql.PedidosSqlDao;
+import dev.el_nico.jardineria.dao1.sql.ProductosSqlDao;
+
 public class SqlTest {
     private static ConexionJardineria jrd;
     protected static ClientesSqlDao clientes;
