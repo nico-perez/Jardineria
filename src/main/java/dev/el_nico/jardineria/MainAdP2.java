@@ -12,14 +12,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
-import dev.el_nico.jardineria.dao1.hibernate.ConexJardineriaHibernate;
-import dev.el_nico.jardineria.excepciones1.ExcepcionCodigoYaExistente;
-import dev.el_nico.jardineria.excepciones1.ExcepcionDatoNoValido;
-import dev.el_nico.jardineria.excepciones1.ExcepcionFormatoIncorrecto;
-import dev.el_nico.jardineria.modelo1.Cliente;
-import dev.el_nico.jardineria.modelo1.DetallePedido;
-import dev.el_nico.jardineria.modelo1.Pedido;
-import dev.el_nico.jardineria.modelo1.Producto;
+import dev.el_nico.jardineria.dao.hibernate.ConexJardineriaHibernate;
+import dev.el_nico.jardineria.excepciones.ExcepcionCodigoYaExistente;
+import dev.el_nico.jardineria.excepciones.ExcepcionDatoNoValido;
+import dev.el_nico.jardineria.excepciones.ExcepcionFormatoIncorrecto;
+import dev.el_nico.jardineria.modelo.Cliente;
+import dev.el_nico.jardineria.modelo.DetallePedido;
+import dev.el_nico.jardineria.modelo.Pedido;
+import dev.el_nico.jardineria.modelo.Producto;
 import dev.el_nico.jardineria.util.SesionHibernate;
 
 /**

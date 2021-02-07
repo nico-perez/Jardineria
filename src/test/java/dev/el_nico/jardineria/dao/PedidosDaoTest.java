@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
 
-import dev.el_nico.jardineria.excepciones1.ExcepcionClienteNoEncontrado;
-import dev.el_nico.jardineria.modelo1.Pedido;
+import dev.el_nico.jardineria.excepciones.ExcepcionClienteNoEncontrado;
+import dev.el_nico.jardineria.modelo.Pedido;
 
 public class PedidosDaoTest {
 
