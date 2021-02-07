@@ -1,6 +1,6 @@
 package dev.el_nico.jardineria;
 
-import dev.el_nico.jardineria.gui.Aplicacion;
+import dev.el_nico.jardineria.gui.swing.Aplicacion;
 
 /**
  * Clase Main de la cuarta práctica de Desarrollo de Interfaces,

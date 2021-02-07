@@ -318,8 +318,8 @@ public class MainAdP2 {
                     ciudad).conNombreDeContacto(nombre_contacto).conApellidoDeContacto(apellido_contacto)
                             .conLineaDireccion2(linea_direccion2).conRegion(region).conPais(pais)
                             .conCodigoPostal(codigo_postal)
-                            .conEmpleadoRepVentas(rep_ventas)
-                            .conLimiteCredito(limite_credito).build();
+                            .conEmpleadoRepVentas(c.empleados().uno(rep_ventas).orElse(null))
+                            .conLimiteCredito(limite_credito).buildOrThrow();
             c.clientes().guardar(cliente);
             System.out.println("\nCliente añadido OK!\n===================");
         } catch (ExcepcionCodigoYaExistente e) {

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 import dev.el_nico.jardineria.dao.IDao;
+import dev.el_nico.jardineria.excepciones.NicoExcepcion;
 import dev.el_nico.jardineria.modelo.Empleado;
 
 public class EmpleadosSqlDao implements IDao<Empleado> {
@@ -22,14 +23,16 @@ public class EmpleadosSqlDao implements IDao<Empleado> {
 
     @Override
     public Optional<Empleado> uno(Object id) {
-        try (PreparedStatement stat = sql.prepareStatement("select * from empleado where codigo_empleado=?;")) {
-            stat.setString(1, (String)id);
-            ResultSet res = stat.executeQuery();
-            if (res.next()) {
-                return sacarEmpleadoDeResultSet(res);
+        if (id != null) {
+            try (PreparedStatement stat = sql.prepareStatement("select * from empleado where codigo_empleado=?;")) {
+                stat.setInt(1, (Integer)id);
+                ResultSet res = stat.executeQuery();
+                if (res.next()) {
+                    return sacarEmpleadoDeResultSet(res);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return Optional.empty();
     }
@@ -60,7 +63,30 @@ public class EmpleadosSqlDao implements IDao<Empleado> {
 
     
     private Optional<Empleado> sacarEmpleadoDeResultSet(ResultSet res) {
-        // TODO uffffffffffffff
+        if (res != null) {
+
+            Empleado empleado;
+            try {
+                int codigo_empleado = res.getInt("codigo_empleado");
+                String nombre = res.getString("nombre");
+                String apellido1 = res.getString("apellido1");
+                String apellido2 = res.getString("apellido2");
+                String extension = res.getString("extension");
+                String email = res.getString("email");
+                String codigo_oficina = res.getString("codigo_oficina");
+                Integer codigo_jefe = res.getInt("codigo_jefe");
+                String puesto = res.getString("puesto");
+
+                empleado = new Empleado.Builder(codigo_empleado, nombre, apellido1, apellido2, extension, email, codigo_oficina, codigo_jefe, puesto).buildOrThrow();
+            } catch (NicoExcepcion | SQLException e) {
+                e.printStackTrace();
+                empleado = null;
+            }
+
+            return Optional.ofNullable(empleado);
+        } else {
+            return Optional.empty();
+        }
     }
 
 }

@@ -79,7 +79,6 @@ public class MainAdP1 {
         Producto producto = optproducto.get();
 
         Producto.Builder mod = new Producto.Builder(producto);
-        String nuevo_codigo = pedirString("codigo_producto", true);
         String nuevo_nombre = pedirString("nombre", true);
         String nueva_gama = pedirString("gama", true);
         String nuevas_dimen = pedirString("dimensiones", true);
@@ -89,7 +88,14 @@ public class MainAdP1 {
         Double nuevo_precio_venta = pedirDouble("precio_venta");
         Double nuevo_precio_prov = pedirDouble("precio_proveedor");
 
-        if (nuevo_codigo != null) mod. // TODO estaba haciendo esto
+        if (nuevo_nombre != null) mod.conNombre(nuevo_nombre);
+        if (nueva_gama != null) mod.conGama(nueva_gama);
+        if (nuevas_dimen != null) mod.conDimensiones(nuevas_dimen);
+        if (nuevo_proveedor != null) mod.conProveedor(nuevo_proveedor);
+        if (nueva_desc != null) mod.conDescripcion(nueva_desc);
+        if (nueva_cantidad != null) mod.conCantidadEnStock(nueva_cantidad);
+        if (nuevo_precio_venta != null) mod.conPrecioVenta(nuevo_precio_venta);
+        if (nuevo_precio_prov != null) mod.conPrecioProveedor(nuevo_precio_prov);
 
         c.productos().modificar(producto);
     }
@@ -153,8 +159,8 @@ public class MainAdP1 {
                     ciudad).conNombreDeContacto(nombre_contacto).conApellidoDeContacto(apellido_contacto)
                             .conLineaDireccion2(linea_direccion2).conRegion(region).conPais(pais)
                             .conCodigoPostal(codigo_postal)
-                            .conEmpleadoRepVentas(rep_ventas)
-                            .conLimiteCredito(limite_credito).build();
+                            .conEmpleadoRepVentas(c.empleados().uno(rep_ventas).orElse(null))
+                            .conLimiteCredito(limite_credito).buildOrThrow();
             c.clientes().guardar(cliente);
             System.out.println("\nCliente añadido OK!\n===================");
         } catch (ExcepcionCodigoYaExistente e) {

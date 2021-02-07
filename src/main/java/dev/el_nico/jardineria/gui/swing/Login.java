@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dev.el_nico.jardineria.gui;
+package dev.el_nico.jardineria.gui.swing;
 
 import java.awt.Color;
 import java.awt.Point;
@@ -20,10 +20,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JRootPane;
 import javax.swing.border.LineBorder;
 
+import dev.el_nico.jardineria.dao.DaoHolder;
 import dev.el_nico.jardineria.dao.gson.ClientesGsonDao;
 import dev.el_nico.jardineria.dao.gson.PedidosGsonDao;
 import dev.el_nico.jardineria.dao.sql.ConexionJardineria;
-import dev.el_nico.jardineria.dao.sql.ProductosSqlDao;
 
 /**
  *
@@ -429,7 +429,7 @@ public class Login extends javax.swing.JDialog {
             ClientesGsonDao daoClientes = new ClientesGsonDao(jsonPath + "/clientes_di_practica4.json");
             PedidosGsonDao daoPedidos = new PedidosGsonDao(jsonPath + "/pedidos_di_practica4.json", daoClientes);
 
-            app.daos = new DaoHolder<PedidosGsonDao, ClientesGsonDao, ProductosSqlDao>(daoPedidos, daoClientes, new ProductosSqlDao(null));
+            app.daos = new DaoHolder(daoClientes ,daoPedidos);
             this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
             app.rellenarTablas();
         }

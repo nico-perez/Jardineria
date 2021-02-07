@@ -4,14 +4,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class ConexionJardineria implements AutoCloseable {
+import dev.el_nico.jardineria.dao.DaoHolder;
+import dev.el_nico.jardineria.dao.IDao;
+import dev.el_nico.jardineria.modelo.DetallePedido;
+
+public class ConexionJardineria extends DaoHolder implements AutoCloseable {
 
     private Connection conn;
-
-    private PedidosSqlDao pedidosDao;
-    private ClientesSqlDao clientesDao;
-    private ProductosSqlDao productosDao; 
-    private EmpleadosSqlDao empleadosDao;
 
     protected Connection getConnection() {
         return conn;
@@ -33,20 +32,34 @@ public class ConexionJardineria implements AutoCloseable {
         }
     }
 
+    @Override
+    @SuppressWarnings("unchecked")
     public PedidosSqlDao pedidos() {
-        return pedidosDao;
+        return (PedidosSqlDao) pedidosDao;
     }
 
+    @Override
+    @SuppressWarnings("unchecked")
     public ClientesSqlDao clientes() {
-        return clientesDao;
+        return (ClientesSqlDao) clientesDao;
     }
 
+    @Override
+    @SuppressWarnings("unchecked")
     public ProductosSqlDao productos() {
-        return productosDao;
+        return (ProductosSqlDao) productosDao;
     }
 
+    @Override
+    @SuppressWarnings("unchecked")
     public EmpleadosSqlDao empleados() {
-        return empleadosDao;
+        return (EmpleadosSqlDao) empleadosDao;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public IDao<DetallePedido> detalles() {
+        return detallesPedidoDao;
     }
 
     @Override

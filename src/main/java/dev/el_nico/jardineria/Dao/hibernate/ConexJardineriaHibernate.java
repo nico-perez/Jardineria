@@ -7,6 +7,7 @@ public class ConexJardineriaHibernate {
     private ClientesHqlDao clientesDao;
     private PedidosHqlDao pedidosDao;
     private ProductosHqlDao productosDao;
+    private EmpleadosHqlDao empleadosDao;
 
 	private Session s;
 
@@ -14,7 +15,8 @@ public class ConexJardineriaHibernate {
         clientesDao = new ClientesHqlDao(s);
         pedidosDao = new PedidosHqlDao(s);
 		productosDao = new ProductosHqlDao(s);
-		
+		empleadosDao = new EmpleadosHqlDao(s);
+
 		this.s = s;
     }
 
@@ -29,6 +31,10 @@ public class ConexJardineriaHibernate {
 	public ProductosHqlDao productos() {
 		return productosDao;
 	}
+
+    public EmpleadosHqlDao empleados() {
+        return empleadosDao;
+    }
 
 	public void close() {
 		s.close();

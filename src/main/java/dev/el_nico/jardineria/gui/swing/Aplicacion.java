@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dev.el_nico.jardineria.gui;
+package dev.el_nico.jardineria.gui.swing;
 
 import java.awt.Color;
 import java.awt.Dialog.ModalityType;
@@ -26,6 +26,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
 
+import dev.el_nico.jardineria.dao.DaoHolder;
 import dev.el_nico.jardineria.dao.sql.ConexionJardineria;
 import dev.el_nico.jardineria.modelo.Cliente;
 import dev.el_nico.jardineria.modelo.Pedido;
@@ -41,7 +42,7 @@ public class Aplicacion extends javax.swing.JFrame {
      */
     private static final long serialVersionUID = 3936351195585276644L;
     
-    /* pkg */ ConexionJardineria daos = new ConexionJardineria();
+    /* pkg */ DaoHolder daos = new ConexionJardineria();
 
     /**
      * Creates new form Aplicacion

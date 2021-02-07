@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dev.el_nico.jardineria.gui;
+package dev.el_nico.jardineria.gui.swing;
 
 import java.awt.Color;
 import java.awt.Dimension;
