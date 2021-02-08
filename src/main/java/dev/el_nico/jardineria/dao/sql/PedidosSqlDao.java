@@ -21,10 +21,9 @@ public class PedidosSqlDao implements IDao<Pedido> {
 
     private Connection sql;
 
-    @SuppressWarnings("unused")
-    private ConexionJardineria daos;
+    private ConexionJardineriaSql daos;
 
-    public PedidosSqlDao(ConexionJardineria daos) {
+    public PedidosSqlDao(ConexionJardineriaSql daos) {
         this.daos = daos;
         sql = daos.getConnection();
     }
@@ -64,26 +63,26 @@ public class PedidosSqlDao implements IDao<Pedido> {
         try (PreparedStatement count_cod_pedido = sql.prepareStatement("select count(*) from pedido where codigo_pedido=?;");
              PreparedStatement count_cod_cliente = sql.prepareStatement("select count(*) from cliente where codigo_cliente=?;");
              PreparedStatement insert_into_pedido = sql.prepareStatement("insert into pedido values(?,?,?,?,?,?,?);")) {
-            count_cod_pedido.setInt(1, t.get_codigo());
+            count_cod_pedido.setInt(1, t.getCodigo());
             ResultSet rs = count_cod_pedido.executeQuery();
             if (rs.next()) {
                 if (rs.getInt(1) != 0) {
                     // ya hay un pedido con el codigo pedido tal
-                    throw new ExcepcionCodigoYaExistente("Ya hay un pedido con código " + t.get_codigo());
+                    throw new ExcepcionCodigoYaExistente("Ya hay un pedido con código " + t.getCodigo());
                 } else {
 
-                    count_cod_cliente.setInt(1, t.get_codigo_cliente());
+                    count_cod_cliente.setInt(1, t.getCodigoCliente());
                     ResultSet rscodcl = count_cod_cliente.executeQuery();
                     if (rscodcl.next()) {
                         if (rscodcl.getInt(1) < 1) {
                             // no hay cliente al que referir
-                            throw new ExcepcionClienteNoEncontrado("No hay cliente con código " + t.get_codigo_cliente()); 
+                            throw new ExcepcionClienteNoEncontrado("No hay cliente con código " + t.getCodigoCliente()); 
                         } else {
 
-                            insert_into_pedido.setInt(1, t.get_codigo());
-                            insert_into_pedido.setDate(2, new Date(t.get_fecha().pedido().getTimeInMillis()));
-                            insert_into_pedido.setDate(3, new Date(t.get_fecha().esperada().getTimeInMillis()));
-                            t.get_fecha().entrega().ifPresentOrElse(e -> {
+                            insert_into_pedido.setInt(1, t.getCodigo());
+                            insert_into_pedido.setDate(2, new Date(t.getFecha().pedido().getTimeInMillis()));
+                            insert_into_pedido.setDate(3, new Date(t.getFecha().esperada().getTimeInMillis()));
+                            t.getFecha().entrega().ifPresentOrElse(e -> {
                                 try {
                                     insert_into_pedido.setDate(4, new Date(e.getTimeInMillis()));
                                 } catch (SQLException e2) {
@@ -96,8 +95,8 @@ public class PedidosSqlDao implements IDao<Pedido> {
                                     e2.printStackTrace();
                                 }
                             });
-                            insert_into_pedido.setString(5, t.get_estado());
-                            t.get_comentarios().ifPresentOrElse(c -> {
+                            insert_into_pedido.setString(5, t.getEstado());
+                            t.getComentarios().ifPresentOrElse(c -> {
                                 try {
                                     insert_into_pedido.setString(6, c);
                                 } catch (SQLException e1) {
@@ -110,7 +109,7 @@ public class PedidosSqlDao implements IDao<Pedido> {
                                     e1.printStackTrace();
                                 }
                             }); // try catch try catch trty cahtch try catch try cathc
-                            insert_into_pedido.setInt(7, t.get_codigo_cliente());
+                            insert_into_pedido.setInt(7, t.getCodigoCliente());
 
                             insert_into_pedido.executeUpdate();
                         }
@@ -127,11 +126,11 @@ public class PedidosSqlDao implements IDao<Pedido> {
 
     @Override
     public void eliminar(Pedido t) {
-        Optional<Pedido> p = uno(t.get_codigo());
+        Optional<Pedido> p = uno(t.getCodigo());
         if (p.isPresent() && p.get().equals(t)) {
             // eliminar
             try (PreparedStatement ps = sql.prepareStatement("delete from pedido where codigo_pedido=?;")) {
-                ps.setInt(1, t.get_codigo());
+                ps.setInt(1, t.getCodigo());
                 ps.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -157,8 +156,8 @@ public class PedidosSqlDao implements IDao<Pedido> {
 
             Pedido pedido;
             try {
-                pedido = new Pedido.Builder(codigo_pedido, fecha_pedido, fecha_esperada, estado, codigo_cliente)
-                        .con_fecha_de_entrega(fecha_entrega).con_comentarios(comentarios).build();
+                pedido = new Pedido.Builder(codigo_pedido, fecha_pedido, fecha_esperada, estado, daos.clientes().uno(codigo_cliente).orElse(null))
+                        .conFechaDeEntrega(fecha_entrega).conComentarios(comentarios).buildOrThrow();
             } catch (ExcepcionDatoNoValido e) {
                 pedido = null;
             }

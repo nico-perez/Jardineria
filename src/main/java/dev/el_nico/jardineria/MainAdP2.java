@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
-import dev.el_nico.jardineria.dao.hibernate.ConexJardineriaHibernate;
+import dev.el_nico.jardineria.dao.hibernate.ConexionJardineriaHql;
 import dev.el_nico.jardineria.excepciones.ExcepcionCodigoYaExistente;
 import dev.el_nico.jardineria.excepciones.ExcepcionDatoNoValido;
 import dev.el_nico.jardineria.excepciones.ExcepcionFormatoIncorrecto;
@@ -20,7 +20,6 @@ import dev.el_nico.jardineria.modelo.Cliente;
 import dev.el_nico.jardineria.modelo.DetallePedido;
 import dev.el_nico.jardineria.modelo.Pedido;
 import dev.el_nico.jardineria.modelo.Producto;
-import dev.el_nico.jardineria.util.SesionHibernate;
 
 /**
  * Clase Main de la práctica 2º de Acceso a Datos, donde
@@ -32,25 +31,36 @@ public class MainAdP2 {
     private static Session session;
 
     public static void main(String[] args) {
-        ConexJardineriaHibernate daos = new ConexJardineriaHibernate(session = SesionHibernate.get());
-        try {
+        try (ConexionJardineriaHql daos = new ConexionJardineriaHql()) {
+
+            // login
+            String user, pass;
+            do {
+                System.out.print("usuario: ");
+                user = System.console().readLine();
+                System.out.print("contraseña: ");
+                pass = new String(System.console().readPassword());
+            } while (!daos.login(user, pass));
+
+            System.out.println("\nLogin OK!\n=========");
+
+            // bucle principal
             int orden = 0;
             do {
                 imprMenu();
                 orden = pedirOrden();
                 acatar(orden, daos);
             } while (orden != 0);
+
+            // logout
+            System.out.println("\nCloseando conexión...\n");
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            if (daos != null) {
-                daos.close();
-            }
         }
     }
 
     // llama a la funcion que corresponda
-    private static void acatar(int orden, ConexJardineriaHibernate s) {
+    private static void acatar(int orden, ConexionJardineriaHql s) {
         switch (orden) {
             case 0: return;
             case 1: pedirDatosYGuardarCliente(s); break;
@@ -63,7 +73,7 @@ public class MainAdP2 {
         }
     }
 
-    private static void mostrarEmpleadoDelMes(ConexJardineriaHibernate s) {
+    private static void mostrarEmpleadoDelMes(ConexionJardineriaHql s) {
         Integer mes, anio;
         boolean bien = false;
         Calendar cal = null;
@@ -104,12 +114,12 @@ public class MainAdP2 {
                 ventas.put(c.getCodigoEmpleadoRepVentas().get(), 0);
             }
             for (Pedido p : pedidos) {
-                Calendar fechaPedido = p.get_fecha().pedido();
-                if (p.get_codigo_cliente() == c.getCodigo() 
+                Calendar fechaPedido = p.getFecha().pedido();
+                if (p.getCodigoCliente() == c.getCodigo() 
                         && fechaPedido.get(Calendar.MONTH) == mes 
                         && fechaPedido.get(Calendar.YEAR) == anio) {
                     for (DetallePedido d : detalles) {
-                        if (d.getCodigoPedido() == p.get_codigo() && c.getCodigoEmpleadoRepVentas().isPresent()) {
+                        if (d.getCodigoPedido() == p.getCodigo() && c.getCodigoEmpleadoRepVentas().isPresent()) {
                             map.put(c.getCodigoEmpleadoRepVentas().get(), map.get(c.getCodigoEmpleadoRepVentas().get()) + d.getCantidad() * d.getPrecioUnidad());
                             if (d.getNumeroLinea() == 1) {
                                 ventas.put(c.getCodigoEmpleadoRepVentas().get(), 1 + ventas.get(c.getCodigoEmpleadoRepVentas().get()));
@@ -134,7 +144,7 @@ public class MainAdP2 {
     }
 
     @SuppressWarnings("unchecked")
-    private static void mostrarDetallesDePedidos(ConexJardineriaHibernate s) {
+    private static void mostrarDetallesDePedidos(ConexionJardineriaHql s) {
         Integer codigo = null;
         do {
             if (codigo != null) {
@@ -160,7 +170,7 @@ public class MainAdP2 {
 
             Optional<Pedido> fecha = s.pedidos().uno(d.getCodigoPedido());
             if (fecha.isPresent()) {
-                Calendar cal = fecha.get().get_fecha().pedido();
+                Calendar cal = fecha.get().getFecha().pedido();
                 fechastring = cal.getDisplayName(Calendar.MONTH, Calendar.LONG_FORMAT, Locale.forLanguageTag("es-ES")) + " de " + cal.get(Calendar.YEAR);
             } else {
                 fechastring = "";
@@ -197,7 +207,7 @@ public class MainAdP2 {
         }
     }
 
-    private static void pedirCodigoYEditarProducto(ConexJardineriaHibernate c) {
+    private static void pedirCodigoYEditarProducto(ConexionJardineriaHql c) {
         Optional<Producto> optproducto;
         String codigo_producto = "";
         boolean error = false;
@@ -245,7 +255,7 @@ public class MainAdP2 {
         }
     }
 
-    private static void pedirPalabraYBuscarClientes(ConexJardineriaHibernate c) {
+    private static void pedirPalabraYBuscarClientes(ConexionJardineriaHql c) {
         String cri = pedirString("palabra clave", true);
         if (cri == null) {
             System.out.println("acción cancelada");
@@ -270,7 +280,7 @@ public class MainAdP2 {
         }
     }
 
-    private static void mostrarTodosLosClientes(ConexJardineriaHibernate c) {
+    private static void mostrarTodosLosClientes(ConexionJardineriaHql c) {
         List<Cliente> clientes = c.clientes().todos();
         clientes.sort((c1, c2) -> c1.getNombre().compareTo(c2.getNombre()));
         
@@ -280,7 +290,7 @@ public class MainAdP2 {
         }
     }
 
-    private static void pedirCodigoYMostrarCliente(ConexJardineriaHibernate c) {
+    private static void pedirCodigoYMostrarCliente(ConexionJardineriaHql c) {
         Integer codigo = pedirEntero("código del cliente", true);
         if (codigo == null) {
             System.out.println("acción cancelada");
@@ -292,7 +302,7 @@ public class MainAdP2 {
         }
     }
 
-    private static void pedirDatosYGuardarCliente(ConexJardineriaHibernate c) {
+    private static void pedirDatosYGuardarCliente(ConexionJardineriaHql c) {
         Integer codigo_cliente     = pedirEntero("codigo_cliente (null para cancelar)", true);
         if (codigo_cliente == null) {
             System.out.println("acción cancelada");

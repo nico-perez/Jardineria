@@ -14,9 +14,11 @@ import dev.el_nico.jardineria.modelo.Empleado;
 public class EmpleadosSqlDao implements IDao<Empleado> {
 
     private Connection sql;
-    private ConexionJardineria daos;
 
-    public EmpleadosSqlDao(ConexionJardineria daos) {
+    @SuppressWarnings("unused")
+    private ConexionJardineriaSql daos;
+
+    public EmpleadosSqlDao(ConexionJardineriaSql daos) {
         this.daos = daos;
         sql = daos.getConnection();
     }

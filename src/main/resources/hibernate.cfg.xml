@@ -15,10 +15,11 @@
 
         <!-- Database connection settings -->
         <property name="connection.url">jdbc:mysql://localhost:3306/jardineria?serverTimezone=UTC</property>
+        <!--
         <property name="connection.username">nico</property>
-        <!--4DM1n4DM1n-->
+        4DM1n4DM1n
         <property name="connection.password">nico</property>
-
+        -->
         <!-- JDBC connection pool (use the built-in) -->
         <property name="connection.pool_size">1</property>
 
@@ -40,7 +41,8 @@
         <mapping class="dev.el_nico.jardineria.modelo.Cliente"/>
         <mapping class="dev.el_nico.jardineria.modelo.Pedido"/>
         <mapping class="dev.el_nico.jardineria.modelo.Producto"/>
-        <mapping class="dev.el_nico.jardineria.modelo.Detalle"/>
+        <mapping class="dev.el_nico.jardineria.modelo.DetallePedido"/>
+        <mapping class="dev.el_nico.jardineria.modelo.Empleado"/>
     </session-factory>
 
 </hibernate-configuration>

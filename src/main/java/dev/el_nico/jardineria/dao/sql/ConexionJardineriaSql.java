@@ -8,7 +8,7 @@ import dev.el_nico.jardineria.dao.DaoHolder;
 import dev.el_nico.jardineria.dao.IDao;
 import dev.el_nico.jardineria.modelo.DetallePedido;
 
-public class ConexionJardineria extends DaoHolder implements AutoCloseable {
+public class ConexionJardineriaSql extends DaoHolder implements AutoCloseable {
 
     private Connection conn;
 

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 
 import dev.el_nico.jardineria.dao.IDao;
 import dev.el_nico.jardineria.excepciones.ExcepcionCodigoYaExistente;
@@ -12,29 +11,29 @@ import dev.el_nico.jardineria.modelo.Producto;
 
 public class ProductosHqlDao implements IDao<Producto> {
 
-    private Session session;
+    ConexionJardineriaHql daos;
 
-    public ProductosHqlDao(Session session) {
-        this.session = session;
+    public ProductosHqlDao(ConexionJardineriaHql daos) {
+        this.daos = daos;
     }
 
     @Override
     public Optional<Producto> uno(Object id) {
-        return Optional.ofNullable(session.get(Producto.class, (String) id));
+        return Optional.ofNullable(daos.getSession().get(Producto.class, (String) id));
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<Producto> todos() {
-        return session.createQuery("from Producto").list();
+        return daos.getSession().createQuery("from Producto").list();
     }
 
     @Override
     public void guardar(Producto t) throws Exception {
         try {
-            session.beginTransaction();
-            session.save(t);
-            session.getTransaction().commit();
+            daos.getSession().beginTransaction();
+            daos.getSession().save(t);
+            daos.getSession().getTransaction().commit();
         } catch (HibernateException e) {
             throw new ExcepcionCodigoYaExistente("ñ");
         }
@@ -42,15 +41,15 @@ public class ProductosHqlDao implements IDao<Producto> {
 
     @Override
     public void modificar(Producto t) {
-        session.beginTransaction();
-        session.evict(t);
-        session.update(t);
-        session.getTransaction().commit();
+        daos.getSession().beginTransaction();
+        daos.getSession().evict(t);
+        daos.getSession().update(t);
+        daos.getSession().getTransaction().commit();
     }
 
     @Override
     public void eliminar(Producto t) {
-        session.delete(t);
+        daos.getSession().delete(t);
     }
     
 }

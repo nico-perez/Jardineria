@@ -18,9 +18,9 @@ import dev.el_nico.jardineria.modelo.Cliente;
 public class ClientesSqlDao implements IDao<Cliente> {
 
     private Connection sql;
-    private ConexionJardineria daos;
+    private ConexionJardineriaSql daos;
 
-    public ClientesSqlDao(ConexionJardineria daos) {
+    public ClientesSqlDao(ConexionJardineriaSql daos) {
         this.daos = daos;
         sql = daos.getConnection();
     }

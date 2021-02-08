@@ -17,9 +17,9 @@ public class ProductosSqlDao implements IDao<Producto> {
     private Connection sql;
 
     @SuppressWarnings("unused")
-    private ConexionJardineria daos;
+    private ConexionJardineriaSql daos;
 
-    public ProductosSqlDao(ConexionJardineria daos) {
+    public ProductosSqlDao(ConexionJardineriaSql daos) {
         this.daos = daos;
         sql = daos.getConnection();
     }

@@ -27,7 +27,7 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
 
 import dev.el_nico.jardineria.dao.DaoHolder;
-import dev.el_nico.jardineria.dao.sql.ConexionJardineria;
+import dev.el_nico.jardineria.dao.sql.ConexionJardineriaSql;
 import dev.el_nico.jardineria.modelo.Cliente;
 import dev.el_nico.jardineria.modelo.Pedido;
 
@@ -42,7 +42,7 @@ public class Aplicacion extends javax.swing.JFrame {
      */
     private static final long serialVersionUID = 3936351195585276644L;
     
-    /* pkg */ DaoHolder daos = new ConexionJardineria();
+    /* pkg */ DaoHolder daos = new ConexionJardineriaSql();
 
     /**
      * Creates new form Aplicacion
@@ -519,16 +519,16 @@ public class Aplicacion extends javax.swing.JFrame {
         final DefaultTableModel TABLA_PEDIDOS = (DefaultTableModel) getTablaPedidos().getModel();
         for (Pedido pedido : daos.pedidos().todos()) {
 
-            final Pedido.Fecha FECHA = pedido.get_fecha();
+            final Pedido.Fecha FECHA = pedido.getFecha();
             final SimpleDateFormat FORMATTER = new SimpleDateFormat("d MMM YYYY");
             TABLA_PEDIDOS.addRow(new Object[] {
-                pedido.get_codigo(),
+                pedido.getCodigo(),
                 FORMATTER.format(FECHA.pedido().getTime()),
                 FORMATTER.format(FECHA.esperada().getTime()),
                 FECHA.entrega().isPresent() ? FORMATTER.format((FECHA.entrega().get().getTime())) : null,
-                pedido.get_estado(),
-                pedido.get_comentarios().orElse(null),
-                pedido.get_codigo_cliente()
+                pedido.getEstado(),
+                pedido.getComentarios().orElse(null),
+                pedido.getCodigoCliente()
             });
         }
     }

@@ -3,7 +3,18 @@ package dev.el_nico.jardineria.modelo;
 import java.util.Calendar;
 import java.util.Optional;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.checkerframework.checker.nullness.qual.NonNull;
+
+import dev.el_nico.jardineria.excepciones.Assert;
 import dev.el_nico.jardineria.excepciones.ExcepcionDatoNoValido;
+import dev.el_nico.jardineria.util.AbstractBuilder;
 
 /**
  * Objeto que representa a uno de los pedidos
@@ -21,56 +32,57 @@ import dev.el_nico.jardineria.excepciones.ExcepcionDatoNoValido;
  * <li>codigo_cliente INTEGER NOT NULL</li>
  * </ul>
  */
-public class Pedido {
+public @Entity class Pedido {
     /** 
      * Demora mínima, en días, que puede tomar un
      * pedido en ser enviado.
      */
     private static final int DEMORA_MINIMA = 3;
 
-    private int codigo;
-    private Fecha fecha;
-    private String estado;
-    private Optional<String> comentarios;
-    private int codigo_cliente;
+    private @NonNull @Id Integer codigo_pedido;
+    private @NonNull @Embedded Fecha fecha;
+    private @NonNull String estado;
+    private String comentarios;
+    private @NonNull Cliente codigo_cliente;
 
-    private Pedido(int codigo, Fecha fecha, String estado, int codigo_cliente) {
-        this.codigo = codigo;
+    private Pedido(Integer codigo, Fecha fecha, String estado, Cliente codigo_cliente) {
+        this.codigo_pedido = codigo;
         this.fecha = fecha;
         this.estado = estado;
         this.codigo_cliente = codigo_cliente;
     }
 
     /** Devuelve el código de pedido. */
-    public int get_codigo() {
-        return codigo;
+    public int getCodigo() {
+        return codigo_pedido;
     }
 
     /** Devuelve la fecha del pedido. Nunca es null. */
-    public Fecha get_fecha() {
+    public Fecha getFecha() {
         return fecha;
     }
 
     /** Devuelve el estado del pedido. Nunca es null. */
-    public String get_estado() {
+    public String getEstado() {
         return estado;
     }
 
     /** Devuelve los comentarios del pedido. */
-    public Optional<String> get_comentarios() {
-        return comentarios;
+    public Optional<String> getComentarios() {
+        return Optional.ofNullable(comentarios);
     }
 
     /** Devuelve el código de cliente del pedido. */
-    public int get_codigo_cliente() {
-        return codigo_cliente;
+    public int getCodigoCliente() {
+        return codigo_cliente.getCodigo();
     }
 
     /** Agrupa las fechas de un pedido. */
-    public static class Fecha {
-        private Calendar pedido;
-        private Calendar esperada;
-        private Optional<Calendar> entrega;
+    public static @Embeddable class Fecha {
+
+        private @NonNull @Temporal(TemporalType.DATE) Calendar pedido;
+        private @NonNull @Temporal(TemporalType.DATE) Calendar esperada;
+        private @Temporal(TemporalType.DATE) Calendar entrega;
 
         /**
          * Construye una nueva Fecha asignando a pedido
@@ -103,13 +115,12 @@ public class Pedido {
 
         /** La fecha de entrega real del pedido. */
         public Optional<Calendar> entrega() {
-            return entrega;
+            return Optional.ofNullable(entrega);
         }
     }
 
     /** Clase para buildear instancias válidas de Pedido. */
-    public static class Builder {
-        private Pedido pedido;
+    public static class Builder extends AbstractBuilder<Pedido> {
 
         /** 
          * Para asegurar la validez de un Pedido deserializado,
@@ -117,7 +128,7 @@ public class Pedido {
          * @param otro Un pedido que no se sabe si es válido.
          */
         public Builder(Pedido otro) {
-            pedido = otro;
+            este = otro;
         }
 
         /**
@@ -130,23 +141,23 @@ public class Pedido {
          * @param estado No sé qué es esto.
          * @param codigo_cliente El código del cliente que realizó el pedido.
          */
-        public Builder(int codigo, int dias_demora, String estado, int codigo_cliente) {
-            this.pedido = new Pedido(codigo, new Fecha(dias_demora), estado, codigo_cliente);
+        public Builder(int codigo, int dias_demora, String estado, Cliente codigo_cliente) {
+            este = new Pedido(codigo, new Fecha(dias_demora), estado, codigo_cliente);
         }
 
-        public Builder(int codigo, Calendar pedido, Calendar esperada, String estado, int codigo_cliente) {
-            this.pedido = new Pedido(codigo, new Fecha(pedido, esperada), estado, codigo_cliente);
+        public Builder(int codigo, Calendar pedido, Calendar esperada, String estado, Cliente codigo_cliente) {
+            este = new Pedido(codigo, new Fecha(pedido, esperada), estado, codigo_cliente);
         }
 
         /** Añade fecha de entrega al builder. */
-        public Builder con_fecha_de_entrega(Calendar entrega) {
-            this.pedido.fecha.entrega = Optional.ofNullable(entrega);
+        public Builder conFechaDeEntrega(Calendar entrega) {
+            este.fecha.entrega = entrega;
             return this;
         }
 
         /** Añade comentarios al builder. */
-        public Builder con_comentarios(String comentarios) {
-            pedido.comentarios = Optional.ofNullable(comentarios);
+        public Builder conComentarios(String comentarios) {
+            este.comentarios = comentarios;
             return this;
         }
 
@@ -159,30 +170,23 @@ public class Pedido {
          * @return Un pedido válido o null si alguno de los datos es
          * incorrecto.
          */
-        public Pedido build() throws ExcepcionDatoNoValido {
-            boolean valido = true;
-            valido &= (pedido.codigo != 0) && 
-                      (pedido.fecha.pedido != null) && 
-                      (pedido.fecha.esperada != null) &&
-                      (pedido.estado != null) &&
-                      (pedido.codigo_cliente != 0);
-            if (!valido) {
-                throw new ExcepcionDatoNoValido("Ninguno de los siguientes campos puede tener " +
-                                                "su valor por defecto: codigo, codigo_cliente, " +
-                                                "fecha_pedido, fecha_esperada, estado.");
-            }
+        public Pedido buildOrThrow() throws ExcepcionDatoNoValido {
+            // notn ull
+            Assert.notNull("codigo_pedido", este.codigo_pedido);
+            Assert.notNull("fecha_pedido", este.fecha.pedido);
+            Assert.notNull("fecha_esperada", este.fecha.esperada);
+            Assert.notNull("estado", este.estado);
+            Assert.notNull("codigo_cliente", este.codigo_cliente);
 
             // Se asegura de que la fecha de espera es por lo menos
             // tres días posterior a la fecha del pedido.
-            Calendar tres_dias_despues_del_pedido = (Calendar)pedido.fecha.pedido.clone();
+            Calendar tres_dias_despues_del_pedido = (Calendar)este.fecha.pedido.clone();
             tres_dias_despues_del_pedido.add(Calendar.DAY_OF_MONTH, DEMORA_MINIMA);
-            if (pedido.fecha.esperada.before(tres_dias_despues_del_pedido)) {
-                valido = false;
+            if (este.fecha.esperada.before(tres_dias_despues_del_pedido)) {
                 throw new ExcepcionDatoNoValido("La fecha esperada debe ser, por lo menos, " +
                                                 "tres días posterior a la fecha del pedido");
             }
-            
-            return valido ? pedido : null;
+            return este;
         }
     }
 }

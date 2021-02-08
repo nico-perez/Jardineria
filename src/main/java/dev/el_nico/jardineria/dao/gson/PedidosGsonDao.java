@@ -50,9 +50,9 @@ public class PedidosGsonDao implements IDao<Pedido> {
             if (arrayPedidos != null) {
                 for (int i = 0; i < arrayPedidos.length; ++i) {
                     try {
-                        Pedido chequeado = new Pedido.Builder(arrayPedidos[i]).build();
-                        if (clientes.uno(chequeado.get_codigo_cliente()).isPresent()) {
-                            pedidos.put(chequeado.get_codigo(), chequeado);
+                        Pedido chequeado = new Pedido.Builder(arrayPedidos[i]).buildOrThrow();
+                        if (clientes.uno(chequeado.getCodigoCliente()).isPresent()) {
+                            pedidos.put(chequeado.getCodigo(), chequeado);
                         } else {
                             throw new ExcepcionDatoNoValido("cliente no existe");
                         }
@@ -81,20 +81,20 @@ public class PedidosGsonDao implements IDao<Pedido> {
 
         // Se asegura de que el código de cliente referencia un
         // cliente existente.
-        if (!clientes.uno(t.get_codigo_cliente()).isPresent()) {
+        if (!clientes.uno(t.getCodigoCliente()).isPresent()) {
             valido = false;
             throw new ExcepcionDatoNoValido("El código de cliente no existe.");
         }
 
         // Se asegura de que el código de pedido no pertenece ya
         // a un pedido existente.
-        if (uno(t.get_codigo()).isPresent()) {
+        if (uno(t.getCodigo()).isPresent()) {
             valido = false;
             throw new ExcepcionCodigoYaExistente("El código de pedido no puede estar duplicado.");
         }
 
         if (valido) {
-            pedidos.put(t.get_codigo(), t);
+            pedidos.put(t.getCodigo(), t);
             Gson gson = new Gson();
             String json_pedidos = gson.toJson(todos());
             try (FileOutputStream fos = new FileOutputStream("pedidos" + (version++) + ".json")) {

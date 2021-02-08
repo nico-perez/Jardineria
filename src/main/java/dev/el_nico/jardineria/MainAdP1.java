@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 
-import dev.el_nico.jardineria.dao.sql.ConexionJardineria;
+import dev.el_nico.jardineria.dao.sql.ConexionJardineriaSql;
 import dev.el_nico.jardineria.excepciones.ExcepcionCodigoYaExistente;
 import dev.el_nico.jardineria.excepciones.ExcepcionDatoNoValido;
 import dev.el_nico.jardineria.excepciones.ExcepcionFormatoIncorrecto;
@@ -21,7 +21,7 @@ import dev.el_nico.jardineria.modelo.Producto;
 public class MainAdP1 {
 
     public static void main(String[] args) {
-        try (ConexionJardineria c = new ConexionJardineria()) {
+        try (ConexionJardineriaSql c = new ConexionJardineriaSql()) {
 
             // login
             String user, pass;
@@ -52,7 +52,7 @@ public class MainAdP1 {
     }
 
     // llama a la funcion que corresponda
-    private static void acatar(int orden, ConexionJardineria c) {
+    private static void acatar(int orden, ConexionJardineriaSql c) {
         switch (orden) {
             case 0: return;
             case 1: pedirDatosYGuardarCliente(c); break;
@@ -63,7 +63,7 @@ public class MainAdP1 {
         }
     }
 
-    private static void pedirCodigoYEditarProducto(ConexionJardineria c) {
+    private static void pedirCodigoYEditarProducto(ConexionJardineriaSql c) {
         Optional<Producto> optproducto;
         String codigo_producto = "";
         boolean error = false;
@@ -100,7 +100,7 @@ public class MainAdP1 {
         c.productos().modificar(producto);
     }
 
-    private static void pedirPalabraYBuscarClientes(ConexionJardineria c) {
+    private static void pedirPalabraYBuscarClientes(ConexionJardineriaSql c) {
         String criterio = pedirString("palabra clave", false).toLowerCase();
         List<Cliente> clientes = c.clientes().todos();
         clientes.removeIf(
@@ -118,7 +118,7 @@ public class MainAdP1 {
         }
     }
 
-    private static void mostrarTodosLosClientes(ConexionJardineria c) {
+    private static void mostrarTodosLosClientes(ConexionJardineriaSql c) {
         List<Cliente> clientes = c.clientes().todos();
         clientes.sort((c1, c2) -> c1.getNombre().compareTo(c2.getNombre()));
         
@@ -128,7 +128,7 @@ public class MainAdP1 {
         }
     }
 
-    private static void pedirCodigoYMostrarCliente(ConexionJardineria c) {
+    private static void pedirCodigoYMostrarCliente(ConexionJardineriaSql c) {
         int codigo = pedirEntero("código del cliente", false);
         if (c.clientes().uno(codigo).isPresent()) {
             System.out.println(c.clientes().uno(codigo).get());
@@ -137,7 +137,7 @@ public class MainAdP1 {
         }
     }
 
-    private static void pedirDatosYGuardarCliente(ConexionJardineria c) {
+    private static void pedirDatosYGuardarCliente(ConexionJardineriaSql c) {
         int codigo_cliente     = pedirEntero("codigo_cliente (no nulo)", false);
         String nombre_cliente     = pedirString("nombre_cliente (no nulo)", false);
         String nombre_contacto    = pedirString("nombre_contacto", true);

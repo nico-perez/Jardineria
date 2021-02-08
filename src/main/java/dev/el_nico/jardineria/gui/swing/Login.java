@@ -23,7 +23,7 @@ import javax.swing.border.LineBorder;
 import dev.el_nico.jardineria.dao.DaoHolder;
 import dev.el_nico.jardineria.dao.gson.ClientesGsonDao;
 import dev.el_nico.jardineria.dao.gson.PedidosGsonDao;
-import dev.el_nico.jardineria.dao.sql.ConexionJardineria;
+import dev.el_nico.jardineria.dao.sql.ConexionJardineriaSql;
 
 /**
  *
@@ -478,7 +478,7 @@ public class Login extends javax.swing.JDialog {
     private int numErrores = 0;
     private void boton_aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton_aceptarActionPerformed
         if (app != null) {
-            if (((ConexionJardineria) app.daos).login(input_usuario.getText(), new String(input_contrasena.getPassword()))) {
+            if (((ConexionJardineriaSql) app.daos).login(input_usuario.getText(), new String(input_contrasena.getPassword()))) {
                 // Login ok, cerrar ventana de login
                 this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
                 app.rellenarTablas();
