@@ -7,6 +7,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -43,6 +44,8 @@ public @Entity class Pedido {
     private @NonNull @Embedded Fecha fecha;
     private @NonNull String estado;
     private String comentarios;
+    
+    @ManyToOne
     private @NonNull Cliente codigo_cliente;
 
     private Pedido(Integer codigo, Fecha fecha, String estado, Cliente codigo_cliente) {

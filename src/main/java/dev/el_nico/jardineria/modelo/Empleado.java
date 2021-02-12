@@ -1,7 +1,9 @@
 package dev.el_nico.jardineria.modelo;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 import dev.el_nico.jardineria.excepciones.NicoExcepcion;
 import dev.el_nico.jardineria.util.AbstractBuilder;
@@ -16,7 +18,10 @@ public class Empleado {
     private String extension;
     private String email;
     private String codigo_oficina;
-    private Integer codigo_jefe;
+    
+    @ManyToOne
+    private Empleado codigo_jefe;
+
     private String puesto;
 
     public Integer getCodigo() {
@@ -28,7 +33,7 @@ public class Empleado {
         // TODO :I
 
         public Builder(Integer codigo, String nombre, String apellido1, String apellido2, String extension,
-        String email, String codigo_oficina, Integer codigo_jefe, String puesto) {
+        String email, String codigo_oficina, Empleado codigo_jefe, String puesto) {
             este = new Empleado();
             este.codigo_empleado = codigo;
             este.nombre = nombre;

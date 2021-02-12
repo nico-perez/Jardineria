@@ -5,7 +5,6 @@ import java.util.Optional;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
@@ -48,7 +47,7 @@ public @Entity class Cliente {
     private @NonNull @Embedded Domicilio domicilio;
     private @NonNull Double limite_credito;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Empleado empleado_rep_ventas;
 
     private @Transient TipoDocumento tipo_documento;
