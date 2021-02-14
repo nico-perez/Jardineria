@@ -2,9 +2,13 @@ package dev.el_nico.jardineria.modelo;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -18,7 +22,15 @@ public class DetallePedido {
     private @NonNull Integer numero_linea;
     private @NonNull Double precio_unidad;
 
-    private DetallePedido() {}
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "codigo_pedido", nullable = false, insertable = false, updatable = false)
+    private @NonNull Pedido pedido;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "codigo_producto", nullable = false, insertable = false, updatable = false)
+    private @NonNull Producto producto;
+
+    /*pkg*/ DetallePedido() {} // hibernate
 
     public Integer getCodigoPedido() {
         return id.codigo_pedido;
@@ -51,7 +63,7 @@ public class DetallePedido {
         private @NonNull Integer codigo_pedido;
         private @NonNull String codigo_producto;
 
-        public Id(){}
+        /*pkg*/ Id() {} // hibeernate?
         public Id(Integer codigo_pedido, String codigo_producto) {
             this.codigo_pedido = codigo_pedido;
             this.codigo_producto = codigo_producto;

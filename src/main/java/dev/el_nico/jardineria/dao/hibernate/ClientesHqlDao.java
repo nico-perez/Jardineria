@@ -35,6 +35,7 @@ public class ClientesHqlDao implements IDao<Cliente> {
             daos.getSession().save(t);
             daos.getSession().getTransaction().commit();
         } catch (HibernateException e) {
+            e.printStackTrace();
             throw new ExcepcionCodigoYaExistente("a");
         }
     }

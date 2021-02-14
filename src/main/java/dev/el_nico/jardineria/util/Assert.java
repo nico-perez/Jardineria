@@ -1,7 +1,9 @@
-package dev.el_nico.jardineria.excepciones;
+package dev.el_nico.jardineria.util;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+
+import dev.el_nico.jardineria.excepciones.ExcepcionDatoNoValido;
 
 public class Assert {
     private Assert(){}

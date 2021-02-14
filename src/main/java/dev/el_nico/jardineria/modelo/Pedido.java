@@ -1,21 +1,27 @@
 package dev.el_nico.jardineria.modelo;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import dev.el_nico.jardineria.excepciones.Assert;
 import dev.el_nico.jardineria.excepciones.ExcepcionDatoNoValido;
 import dev.el_nico.jardineria.util.AbstractBuilder;
+import dev.el_nico.jardineria.util.Assert;
 
 /**
  * Objeto que representa a uno de los pedidos
@@ -45,14 +51,19 @@ public @Entity class Pedido {
     private @NonNull String estado;
     private String comentarios;
     
-    @ManyToOne
-    private @NonNull Cliente codigo_cliente;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "codigo_cliente", nullable = false)
+    private @NonNull Cliente cliente;
 
+    @OneToMany(mappedBy = "pedido")
+    private @NonNull List<DetallePedido> detalles;
+
+    /*pkg*/ Pedido() {} // hiebnate
     private Pedido(Integer codigo, Fecha fecha, String estado, Cliente codigo_cliente) {
         this.codigo_pedido = codigo;
         this.fecha = fecha;
         this.estado = estado;
-        this.codigo_cliente = codigo_cliente;
+        this.cliente = codigo_cliente;
     }
 
     /** Devuelve el código de pedido. */
@@ -77,15 +88,17 @@ public @Entity class Pedido {
 
     /** Devuelve el código de cliente del pedido. */
     public int getCodigoCliente() {
-        return codigo_cliente.getCodigo();
+        return cliente.getCodigo();
     }
 
     /** Agrupa las fechas de un pedido. */
     public static @Embeddable class Fecha {
 
-        private @NonNull @Temporal(TemporalType.DATE) Calendar pedido;
-        private @NonNull @Temporal(TemporalType.DATE) Calendar esperada;
-        private @Temporal(TemporalType.DATE) Calendar entrega;
+        private @NonNull @Temporal(TemporalType.DATE) Calendar fecha_pedido;
+        private @NonNull @Temporal(TemporalType.DATE) Calendar fecha_esperada;
+        private @Temporal(TemporalType.DATE) Calendar fecha_entrega;
+
+        /*pkg*/ Fecha() {} // heibneate
 
         /**
          * Construye una nueva Fecha asignando a pedido
@@ -97,29 +110,48 @@ public @Entity class Pedido {
          * tarde el pedido en llegar.
          */
         private Fecha(int demora_esperada) {
-            this.pedido = Calendar.getInstance();
-            (this.esperada = (Calendar)pedido.clone()).add(Calendar.DAY_OF_MONTH, demora_esperada);
+            this.fecha_pedido = Calendar.getInstance();
+            (this.fecha_esperada = (Calendar)fecha_pedido.clone()).add(Calendar.DAY_OF_MONTH, demora_esperada);
         }
 
         private Fecha(Calendar pedido, Calendar esperada) {
-            this.pedido = pedido;
-            this.esperada = esperada;
+            this.fecha_pedido = pedido;
+            this.fecha_esperada = esperada;
         }
 
         /** La fecha en que se hizo el pedido. Nunca es null. */
         public Calendar pedido() {
-            return pedido;
+            return fecha_pedido;
         }
 
         /** La fecha esperada de entrega del pedido. Nunca es null. */
         public Calendar esperada() {
-            return esperada;
+            return fecha_esperada;
         }
 
         /** La fecha de entrega real del pedido. */
         public Optional<Calendar> entrega() {
-            return Optional.ofNullable(entrega);
+            return Optional.ofNullable(fecha_entrega);
         }
+    }
+
+    @Override
+    public String toString() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        
+        String stringFechaEntrega = fecha.fecha_entrega == null ? "------" : sdf.format(fecha.fecha_entrega.getTime());
+        StringBuilder sb = new StringBuilder(1024).append("============= Pedido ").append(codigo_pedido).append(" =============\n")
+                .append("- Fecha: {\n").append("    Pedido: ").append(sdf.format(fecha.fecha_pedido.getTime())).append("\n    Esperada: ")
+                .append(sdf.format(fecha.fecha_esperada.getTime())).append("\n    Entrega: ").append(stringFechaEntrega).append("\n}\n- Estado: ")
+                .append(estado).append("\n- Comentarios: ").append(getComentarios().orElse("------"))
+                .append("\n- Detalles: {\n");
+        detalles.sort((a, b) -> a.getNumeroLinea().compareTo(b.getNumeroLinea()));
+        for (DetallePedido detalle : detalles) {
+            sb.append("    ").append(detalle).append("\n");
+        }
+        sb.append("}\n");
+        sb.trimToSize();
+        return sb.toString();
     }
 
     /** Clase para buildear instancias válidas de Pedido. */
@@ -154,7 +186,7 @@ public @Entity class Pedido {
 
         /** Añade fecha de entrega al builder. */
         public Builder conFechaDeEntrega(Calendar entrega) {
-            este.fecha.entrega = entrega;
+            este.fecha.fecha_entrega = entrega;
             return this;
         }
 
@@ -176,16 +208,16 @@ public @Entity class Pedido {
         public Pedido buildOrThrow() throws ExcepcionDatoNoValido {
             // notn ull
             Assert.notNull("codigo_pedido", este.codigo_pedido);
-            Assert.notNull("fecha_pedido", este.fecha.pedido);
-            Assert.notNull("fecha_esperada", este.fecha.esperada);
+            Assert.notNull("fecha_pedido", este.fecha.fecha_pedido);
+            Assert.notNull("fecha_esperada", este.fecha.fecha_esperada);
             Assert.notNull("estado", este.estado);
-            Assert.notNull("codigo_cliente", este.codigo_cliente);
+            Assert.notNull("codigo_cliente", este.cliente);
 
             // Se asegura de que la fecha de espera es por lo menos
             // tres días posterior a la fecha del pedido.
-            Calendar tres_dias_despues_del_pedido = (Calendar)este.fecha.pedido.clone();
+            Calendar tres_dias_despues_del_pedido = (Calendar)este.fecha.fecha_pedido.clone();
             tres_dias_despues_del_pedido.add(Calendar.DAY_OF_MONTH, DEMORA_MINIMA);
-            if (este.fecha.esperada.before(tres_dias_despues_del_pedido)) {
+            if (este.fecha.fecha_esperada.before(tres_dias_despues_del_pedido)) {
                 throw new ExcepcionDatoNoValido("La fecha esperada debe ser, por lo menos, " +
                                                 "tres días posterior a la fecha del pedido");
             }

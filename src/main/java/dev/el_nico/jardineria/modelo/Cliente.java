@@ -1,20 +1,25 @@
 package dev.el_nico.jardineria.modelo;
 
+import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import dev.el_nico.jardineria.excepciones.Assert;
 import dev.el_nico.jardineria.excepciones.ExcepcionDatoNoValido;
 import dev.el_nico.jardineria.excepciones.ExcepcionFormatoIncorrecto;
 import dev.el_nico.jardineria.util.AbstractBuilder;
+import dev.el_nico.jardineria.util.Assert;
 
 /**
  * Objeto que representa a uno de los clientes
@@ -47,14 +52,19 @@ public @Entity class Cliente {
     private @NonNull @Embedded Domicilio domicilio;
     private @NonNull Double limite_credito;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "codigo_empleado_rep_ventas") // el nombre de la columna de la tabla cliente (integer)
     private Empleado empleado_rep_ventas;
+
+    @OneToMany(mappedBy = "cliente")
+    private List<Pedido> pedidos;
 
     private @Transient TipoDocumento tipo_documento;
     private @Transient String documento;
     private @Transient String email;
     private @Transient String contrasena;
 
+    /*pkg*/ Cliente() {} // hivernate
     private Cliente(int codigo, String nombre, Contacto contacto,  Domicilio domicilio) {
         this.codigo_cliente = codigo;
         this.nombre_cliente = nombre;
@@ -78,6 +88,7 @@ public @Entity class Cliente {
      * Devuelve el código del empleado representante de 
      * ventas.
      */
+    //@Column(name = "cod_empleado_rep_ventas")
     public Optional<Integer> getCodigoEmpleadoRepVentas() {
         if (empleado_rep_ventas != null) {
             return Optional.of(empleado_rep_ventas.getCodigo());
@@ -142,6 +153,7 @@ public @Entity class Cliente {
         private @NonNull String telefono;
         private @NonNull String fax;
 
+        /*pkg*/ Contacto() {} // hibenrate
         private Contacto(String telefono, String fax) {
             this.telefono = telefono;
             this.fax = fax;
@@ -191,6 +203,7 @@ public @Entity class Cliente {
         private String pais;
         private String codigo_postal;
 
+        /*pkg*/ Domicilio() {} // hibernatoe
         private Domicilio(String direccion1, String ciudad) {
             this.linea_direccion1 = direccion1;
             this.ciudad = ciudad;

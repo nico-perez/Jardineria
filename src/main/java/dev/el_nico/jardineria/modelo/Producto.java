@@ -7,11 +7,12 @@ import javax.persistence.Id;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import dev.el_nico.jardineria.excepciones.Assert;
 import dev.el_nico.jardineria.excepciones.ExcepcionDatoNoValido;
 import dev.el_nico.jardineria.util.AbstractBuilder;
+import dev.el_nico.jardineria.util.Assert;
 
 public @Entity class Producto {
+    
     private @NonNull @Id String codigo_producto;
     private @NonNull String nombre;
     private @NonNull String gama;
@@ -22,6 +23,7 @@ public @Entity class Producto {
     private @NonNull Double precio_venta;
     private Double precio_proveedor;
 
+    /*pkg*/ Producto() {} // hibenrate
     private Producto(String codigo_producto, String nombre, String gama, int cantidad_en_stock, double precio_venta) {
         this.codigo_producto = codigo_producto;
         this.nombre = nombre;
