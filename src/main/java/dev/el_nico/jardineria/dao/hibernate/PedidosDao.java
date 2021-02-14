@@ -8,32 +8,27 @@ import org.hibernate.HibernateException;
 import dev.el_nico.jardineria.dao.IDao;
 import dev.el_nico.jardineria.excepciones.ExcepcionCodigoYaExistente;
 import dev.el_nico.jardineria.modelo.Pedido;
+import dev.el_nico.jardineria.util.hibernate.SesionHibernate;
 
-public class PedidosHqlDao implements IDao<Pedido> {
-
-    ConexionJardineriaHql daos;
-
-    public PedidosHqlDao(ConexionJardineriaHql daos) {
-        this.daos = daos;
-    }
+public class PedidosDao implements IDao<Pedido> {
 
     @Override
     public Optional<Pedido> uno(Object id) {
-        return Optional.ofNullable(daos.getSession().get(Pedido.class, (Integer) id));
+        return Optional.ofNullable(SesionHibernate.get().get(Pedido.class, (Integer) id));
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<Pedido> todos() {
-        return daos.getSession().createQuery("from Pedido").list();
+        return SesionHibernate.get().createQuery("from Pedido").list();
     }
 
     @Override
     public void guardar(Pedido t) throws Exception {
         try {
-            daos.getSession().beginTransaction();
-            daos.getSession().save(t);
-            daos.getSession().getTransaction().commit();
+            SesionHibernate.get().beginTransaction();
+            SesionHibernate.get().save(t);
+            SesionHibernate.get().getTransaction().commit();
         } catch (HibernateException e) {
             throw new ExcepcionCodigoYaExistente("u");
         }
@@ -41,14 +36,14 @@ public class PedidosHqlDao implements IDao<Pedido> {
 
     @Override
     public void modificar(Pedido t) {
-        daos.getSession().beginTransaction();
-        daos.getSession().update(t);
-        daos.getSession().getTransaction().commit();
+        SesionHibernate.get().beginTransaction();
+        SesionHibernate.get().update(t);
+        SesionHibernate.get().getTransaction().commit();
     }
 
     @Override
     public void eliminar(Pedido t) {
-        daos.getSession().delete(t);
+        SesionHibernate.get().delete(t);
     }
     
 }

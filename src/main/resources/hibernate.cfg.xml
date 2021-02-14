@@ -23,6 +23,7 @@
         <!-- JDBC connection pool (use the built-in) -->
         <property name="connection.pool_size">1</property>
 
+        <property name="hibernate.id.new_generator_mappings">true</property>
         <!-- SQL dialect -->
         <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
 

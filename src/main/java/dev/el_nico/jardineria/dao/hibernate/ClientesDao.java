@@ -8,32 +8,27 @@ import org.hibernate.HibernateException;
 import dev.el_nico.jardineria.dao.IDao;
 import dev.el_nico.jardineria.excepciones.ExcepcionCodigoYaExistente;
 import dev.el_nico.jardineria.modelo.Cliente;
+import dev.el_nico.jardineria.util.hibernate.SesionHibernate;
 
-public class ClientesHqlDao implements IDao<Cliente> {
-
-    private ConexionJardineriaHql daos;
-
-    public ClientesHqlDao(ConexionJardineriaHql daos) {
-        this.daos = daos;
-    }
+public class ClientesDao implements IDao<Cliente> {
 
     @Override
     public Optional<Cliente> uno(Object id) {
-        return Optional.ofNullable(daos.getSession().get(Cliente.class, (Integer) id));
+        return Optional.ofNullable(SesionHibernate.get().get(Cliente.class, (Integer) id));
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<Cliente> todos() {
-        return daos.getSession().createQuery("from Cliente").list();
+        return SesionHibernate.get().createQuery("from Cliente").list();
     }
 
     @Override
     public void guardar(Cliente t) throws ExcepcionCodigoYaExistente {
         try {
-            daos.getSession().beginTransaction();
-            daos.getSession().save(t);
-            daos.getSession().getTransaction().commit();
+            SesionHibernate.get().beginTransaction();
+            SesionHibernate.get().save(t);
+            SesionHibernate.get().getTransaction().commit();
         } catch (HibernateException e) {
             e.printStackTrace();
             throw new ExcepcionCodigoYaExistente("a");
@@ -42,14 +37,14 @@ public class ClientesHqlDao implements IDao<Cliente> {
 
     @Override
     public void modificar(Cliente t) {
-        daos.getSession().beginTransaction();
-        daos.getSession().update(t);
-        daos.getSession().getTransaction().commit();
+        SesionHibernate.get().beginTransaction();
+        SesionHibernate.get().update(t);
+        SesionHibernate.get().getTransaction().commit();
     }
 
     @Override
     public void eliminar(Cliente t) {
-        daos.getSession().delete(t);
+        SesionHibernate.get().delete(t);
     }
     
 }

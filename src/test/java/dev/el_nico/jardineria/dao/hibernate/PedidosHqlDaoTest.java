@@ -6,6 +6,6 @@ public class PedidosHqlDaoTest extends HibernateTest {
 
     @Test 
     public void getearPedidoTest() {
-        jard.pedidos().uno(10).ifPresent(e -> System.out.println(e));
+        ConexionJardineria.pedidos().uno(10).ifPresent(e -> System.out.println(e));
     }
 }

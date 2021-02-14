@@ -5,18 +5,13 @@ import java.util.Optional;
 
 import dev.el_nico.jardineria.dao.IDao;
 import dev.el_nico.jardineria.modelo.Empleado;
+import dev.el_nico.jardineria.util.hibernate.SesionHibernate;
 
-public class EmpleadosHqlDao implements IDao<Empleado> {
-
-    private ConexionJardineriaHql daos;
-
-	public EmpleadosHqlDao(ConexionJardineriaHql daos) {
-        this.daos = daos;
-	}
+public class EmpleadosDao implements IDao<Empleado> {
 
 	@Override
     public Optional<Empleado> uno(Object id) {
-        return Optional.ofNullable(daos.getSession().get(Empleado.class, (Integer) id));
+        return Optional.ofNullable(SesionHibernate.get().get(Empleado.class, (Integer) id));
     }
 
     @Override

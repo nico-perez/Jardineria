@@ -7,19 +7,24 @@ import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.GenericGenerators;
+import org.hibernate.annotations.Parameter;
 
 import dev.el_nico.jardineria.excepciones.ExcepcionDatoNoValido;
 import dev.el_nico.jardineria.excepciones.ExcepcionFormatoIncorrecto;
 import dev.el_nico.jardineria.util.AbstractBuilder;
 import dev.el_nico.jardineria.util.Assert;
+import dev.el_nico.jardineria.util.hibernate.NicoNumIdGen;
 
 /**
  * Objeto que representa a uno de los clientes
@@ -46,13 +51,15 @@ import dev.el_nico.jardineria.util.Assert;
  */
 public @Entity class Cliente {
 
-    private @NonNull @Id Integer codigo_cliente; 
+    @GeneratedValue(generator = "cliente_id_gen")
+    @GenericGenerator(name = "cliente_id_gen", strategy = NicoNumIdGen.STRAT)
+    private @Id Integer codigo_cliente; 
     private @NonNull String nombre_cliente;
     private @NonNull @Embedded Contacto contacto;
     private @NonNull @Embedded Domicilio domicilio;
     private @NonNull Double limite_credito;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "codigo_empleado_rep_ventas") // el nombre de la columna de la tabla cliente (integer)
     private Empleado empleado_rep_ventas;
 
@@ -65,8 +72,8 @@ public @Entity class Cliente {
     private @Transient String contrasena;
 
     /*pkg*/ Cliente() {} // hivernate
-    private Cliente(int codigo, String nombre, Contacto contacto,  Domicilio domicilio) {
-        this.codigo_cliente = codigo;
+    private Cliente(/*int codigo,*/ String nombre, Contacto contacto,  Domicilio domicilio) {
+        //this.codigo_cliente = codigo;
         this.nombre_cliente = nombre;
         this.contacto = contacto;
         this.domicilio = domicilio;
@@ -266,9 +273,9 @@ public @Entity class Cliente {
          * aportados pueden ser null, y será la función «build» quien
          * lance la excepción.
          */
-        public Builder(int codigo, String nombre, String telefono, 
+        public Builder(/*int codigo,*/ String nombre, String telefono, 
                        String fax, String direccion1, String ciudad) {
-            este = new Cliente(codigo, 
+            este = new Cliente(//codigo, 
                                nombre, 
                                new Contacto(telefono, fax), 
                                new Domicilio(direccion1, ciudad));
@@ -384,7 +391,7 @@ public @Entity class Cliente {
         public Cliente buildOrThrow() throws ExcepcionDatoNoValido,
                                              ExcepcionFormatoIncorrecto {
             /* QUE LOS DATOS NOT NULL NO SEAN NULL */
-            Assert.notNull("codigo_cliente", este.codigo_cliente);
+           // Assert.notNull("codigo_cliente", este.codigo_cliente);
             Assert.notNull("nombre_cliente", este.nombre_cliente);
             Assert.notNull("telefono", este.contacto.telefono);
             Assert.notNull("fax", este.contacto.fax);

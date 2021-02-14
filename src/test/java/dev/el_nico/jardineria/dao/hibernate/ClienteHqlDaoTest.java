@@ -14,8 +14,8 @@ public class ClienteHqlDaoTest extends HibernateTest {
     @Test
     public void testAniadirUnCliente() {
         try {
-            jard.clientes().guardar(new Cliente.Builder(4830, "TestHib", "dfsjkd", "dghdf", "ads", "dfs")
-                    .conEmpleadoRepVentas(10).buildOrThrow()); // hay codigos de empleado del 1 al 31
+            ConexionJardineria.clientes().guardar(new Cliente.Builder(/*4831,*/ "AUTOWOPWOP", "wopwop", "dghdf", "ads", "dfs")
+                    .conEmpleadoRepVentas(ConexionJardineria.empleados().uno(14).get()).buildOrThrow()); // hay codigos de empleado del 1 al 31
         } catch (ExcepcionCodigoYaExistente | ExcepcionDatoNoValido | ExcepcionFormatoIncorrecto e) {
             e.printStackTrace();
             fail();
@@ -25,8 +25,8 @@ public class ClienteHqlDaoTest extends HibernateTest {
     @Test
     public void testAniadirUnClientePeroElCodigoRepVentasNoExiste() {
         try {
-            jard.clientes().guardar(new Cliente.Builder(4824, "TestHib", "dfsjkd", "dghdf", "ads", "dfs")
-                    .conEmpleadoRepVentas(69).buildOrThrow()); // hay codigos de empleado del 1 al 31
+            ConexionJardineria.clientes().guardar(new Cliente.Builder(/*4824,*/ "TestHib", "dfsjkd", "dghdf", "ads", "dfs")
+                    .conEmpleadoRepVentas(ConexionJardineria.empleados().uno(69).get()).buildOrThrow()); // hay codigos de empleado del 1 al 31
         } catch (ExcepcionCodigoYaExistente | ExcepcionDatoNoValido | ExcepcionFormatoIncorrecto e) {
             e.printStackTrace();
         }
@@ -34,6 +34,6 @@ public class ClienteHqlDaoTest extends HibernateTest {
 
     @Test
     public void getearCliente(){
-        jard.clientes().uno(20).ifPresent(e -> System.out.println(e));
+        ConexionJardineria.clientes().uno(20).ifPresent(e -> System.out.println(e));
     }
 }

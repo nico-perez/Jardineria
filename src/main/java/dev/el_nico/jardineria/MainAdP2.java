@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
-import dev.el_nico.jardineria.dao.hibernate.ConexionJardineriaHql;
+import dev.el_nico.jardineria.dao.hibernate.ConexionJardineria;
 import dev.el_nico.jardineria.excepciones.ExcepcionCodigoYaExistente;
 import dev.el_nico.jardineria.excepciones.ExcepcionDatoNoValido;
 import dev.el_nico.jardineria.excepciones.ExcepcionFormatoIncorrecto;
@@ -31,7 +31,7 @@ public class MainAdP2 {
     private static Session session;
 
     public static void main(String[] args) {
-        try (ConexionJardineriaHql daos = new ConexionJardineriaHql()) {
+        try (ConexionJardineria daos = new ConexionJardineria()) {
 
             // login
             String user, pass;
@@ -60,7 +60,7 @@ public class MainAdP2 {
     }
 
     // llama a la funcion que corresponda
-    private static void acatar(int orden, ConexionJardineriaHql s) {
+    private static void acatar(int orden, ConexionJardineria s) {
         switch (orden) {
             case 0: return;
             case 1: pedirDatosYGuardarCliente(s); break;
@@ -73,7 +73,7 @@ public class MainAdP2 {
         }
     }
 
-    private static void mostrarEmpleadoDelMes(ConexionJardineriaHql s) {
+    private static void mostrarEmpleadoDelMes(ConexionJardineria s) {
         Integer mes, anio;
         boolean bien = false;
         Calendar cal = null;
@@ -144,7 +144,7 @@ public class MainAdP2 {
     }
 
     @SuppressWarnings("unchecked")
-    private static void mostrarDetallesDePedidos(ConexionJardineriaHql s) {
+    private static void mostrarDetallesDePedidos(ConexionJardineria s) {
         Integer codigo = null;
         do {
             if (codigo != null) {
@@ -207,7 +207,7 @@ public class MainAdP2 {
         }
     }
 
-    private static void pedirCodigoYEditarProducto(ConexionJardineriaHql c) {
+    private static void pedirCodigoYEditarProducto(ConexionJardineria c) {
         Optional<Producto> optproducto;
         String codigo_producto = "";
         boolean error = false;
@@ -255,7 +255,7 @@ public class MainAdP2 {
         }
     }
 
-    private static void pedirPalabraYBuscarClientes(ConexionJardineriaHql c) {
+    private static void pedirPalabraYBuscarClientes(ConexionJardineria c) {
         String cri = pedirString("palabra clave", true);
         if (cri == null) {
             System.out.println("acción cancelada");
@@ -280,7 +280,7 @@ public class MainAdP2 {
         }
     }
 
-    private static void mostrarTodosLosClientes(ConexionJardineriaHql c) {
+    private static void mostrarTodosLosClientes(ConexionJardineria c) {
         List<Cliente> clientes = c.clientes().todos();
         clientes.sort((c1, c2) -> c1.getNombre().compareTo(c2.getNombre()));
         
@@ -290,7 +290,7 @@ public class MainAdP2 {
         }
     }
 
-    private static void pedirCodigoYMostrarCliente(ConexionJardineriaHql c) {
+    private static void pedirCodigoYMostrarCliente(ConexionJardineria c) {
         Integer codigo = pedirEntero("código del cliente", true);
         if (codigo == null) {
             System.out.println("acción cancelada");
@@ -302,7 +302,7 @@ public class MainAdP2 {
         }
     }
 
-    private static void pedirDatosYGuardarCliente(ConexionJardineriaHql c) {
+    private static void pedirDatosYGuardarCliente(ConexionJardineria c) {
         Integer codigo_cliente     = pedirEntero("codigo_cliente (null para cancelar)", true);
         if (codigo_cliente == null) {
             System.out.println("acción cancelada");

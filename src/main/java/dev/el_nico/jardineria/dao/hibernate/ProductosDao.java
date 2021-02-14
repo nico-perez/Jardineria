@@ -8,32 +8,27 @@ import org.hibernate.HibernateException;
 import dev.el_nico.jardineria.dao.IDao;
 import dev.el_nico.jardineria.excepciones.ExcepcionCodigoYaExistente;
 import dev.el_nico.jardineria.modelo.Producto;
+import dev.el_nico.jardineria.util.hibernate.SesionHibernate;
 
-public class ProductosHqlDao implements IDao<Producto> {
-
-    ConexionJardineriaHql daos;
-
-    public ProductosHqlDao(ConexionJardineriaHql daos) {
-        this.daos = daos;
-    }
+public class ProductosDao implements IDao<Producto> {
 
     @Override
     public Optional<Producto> uno(Object id) {
-        return Optional.ofNullable(daos.getSession().get(Producto.class, (String) id));
+        return Optional.ofNullable(SesionHibernate.get().get(Producto.class, (String) id));
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<Producto> todos() {
-        return daos.getSession().createQuery("from Producto").list();
+        return SesionHibernate.get().createQuery("from Producto").list();
     }
 
     @Override
     public void guardar(Producto t) throws Exception {
         try {
-            daos.getSession().beginTransaction();
-            daos.getSession().save(t);
-            daos.getSession().getTransaction().commit();
+            SesionHibernate.get().beginTransaction();
+            SesionHibernate.get().save(t);
+            SesionHibernate.get().getTransaction().commit();
         } catch (HibernateException e) {
             throw new ExcepcionCodigoYaExistente("ñ");
         }
@@ -41,15 +36,15 @@ public class ProductosHqlDao implements IDao<Producto> {
 
     @Override
     public void modificar(Producto t) {
-        daos.getSession().beginTransaction();
-        daos.getSession().evict(t);
-        daos.getSession().update(t);
-        daos.getSession().getTransaction().commit();
+        SesionHibernate.get().beginTransaction();
+        SesionHibernate.get().evict(t);
+        SesionHibernate.get().update(t);
+        SesionHibernate.get().getTransaction().commit();
     }
 
     @Override
     public void eliminar(Producto t) {
-        daos.getSession().delete(t);
+        SesionHibernate.get().delete(t);
     }
     
 }
