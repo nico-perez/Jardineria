@@ -10,6 +10,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -18,10 +19,12 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.hibernate.annotations.GenericGenerator;
 
 import dev.el_nico.jardineria.excepciones.ExcepcionDatoNoValido;
 import dev.el_nico.jardineria.util.AbstractBuilder;
 import dev.el_nico.jardineria.util.Assert;
+import dev.el_nico.jardineria.util.hibernate.NicoNumIdGen;
 
 /**
  * Objeto que representa a uno de los pedidos
@@ -46,7 +49,9 @@ public @Entity class Pedido {
      */
     private static final int DEMORA_MINIMA = 3;
 
-    private @NonNull @Id Integer codigo_pedido;
+    @GeneratedValue(generator = "pedido_id_gen")
+    @GenericGenerator(name = "pedido_id_gen", strategy = NicoNumIdGen.STRAT)
+    private @Id Integer codigo_pedido;
     private @NonNull @Embedded Fecha fecha;
     private @NonNull String estado;
     private String comentarios;

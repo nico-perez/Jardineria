@@ -14,8 +14,8 @@ public class ClienteHqlDaoTest extends HibernateTest {
     @Test
     public void testAniadirUnCliente() {
         try {
-            ConexionJardineria.clientes().guardar(new Cliente.Builder(/*4831,*/ "AUTOWOPWOP", "wopwop", "dghdf", "ads", "dfs")
-                    .conEmpleadoRepVentas(ConexionJardineria.empleados().uno(14).get()).buildOrThrow()); // hay codigos de empleado del 1 al 31
+            Jardineria.clientes().guardar(new Cliente.Builder(/*4831,*/ "AUTOWOPWOP", "wopwop", "dghdf", "ads", "dfs")
+                    .conEmpleadoRepVentas(Jardineria.empleados().uno(14).get()).buildOrThrow()); // hay codigos de empleado del 1 al 31
         } catch (ExcepcionCodigoYaExistente | ExcepcionDatoNoValido | ExcepcionFormatoIncorrecto e) {
             e.printStackTrace();
             fail();
@@ -25,15 +25,21 @@ public class ClienteHqlDaoTest extends HibernateTest {
     @Test
     public void testAniadirUnClientePeroElCodigoRepVentasNoExiste() {
         try {
-            ConexionJardineria.clientes().guardar(new Cliente.Builder(/*4824,*/ "TestHib", "dfsjkd", "dghdf", "ads", "dfs")
-                    .conEmpleadoRepVentas(ConexionJardineria.empleados().uno(69).get()).buildOrThrow()); // hay codigos de empleado del 1 al 31
+            Jardineria.clientes().guardar(new Cliente.Builder(/*4824,*/ "TestHib", "dfsjkd", "dghdf", "ads", "dfs")
+                    .conEmpleadoRepVentas(Jardineria.empleados().uno(69).get()).buildOrThrow()); // hay codigos de empleado del 1 al 31
         } catch (ExcepcionCodigoYaExistente | ExcepcionDatoNoValido | ExcepcionFormatoIncorrecto e) {
             e.printStackTrace();
         }
     }
 
     @Test
+    public void chequearGenId() {
+        Cliente c = new Cliente.Builder("dsfh", "fdj", "fjidgfdi", "sdjfi", "dfsoi").build().get();
+        System.out.println(c);
+    }
+
+    @Test
     public void getearCliente(){
-        ConexionJardineria.clientes().uno(20).ifPresent(e -> System.out.println(e));
+        Jardineria.clientes().uno(20).ifPresent(e -> System.out.println(e));
     }
 }

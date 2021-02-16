@@ -6,14 +6,14 @@ import org.hibernate.Session;
 
 import dev.el_nico.jardineria.util.hibernate.SesionHibernate;
 
-public class ConexionJardineria {
+public class Jardineria {
 
     private static ClientesDao clientesDao;
     private static PedidosDao pedidosDao;
     private static ProductosDao productosDao;
     private static EmpleadosDao empleadosDao;
 
-    private ConexionJardineria() {}
+    private Jardineria() {}
 
     public static boolean login(String user, String pass) {
 

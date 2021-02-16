@@ -11,7 +11,7 @@ public class HibernateTest {
 
     @BeforeAll
     public static final void establecerConexion() {
-        if (!ConexionJardineria.login("admin", "admin")) {
+        if (!Jardineria.login("admin", "admin")) {
             fail("uh oh");
         }
     }
@@ -19,7 +19,7 @@ public class HibernateTest {
     @AfterAll
     public static final void cerrarConexion() {
         try {
-            ConexionJardineria.close();
+            Jardineria.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

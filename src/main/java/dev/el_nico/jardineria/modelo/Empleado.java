@@ -4,20 +4,26 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.hibernate.annotations.GenericGenerator;
 
 import dev.el_nico.jardineria.excepciones.NicoExcepcion;
 import dev.el_nico.jardineria.util.AbstractBuilder;
+import dev.el_nico.jardineria.util.hibernate.NicoNumIdGen;
 
 @Entity
 public class Empleado {
 
-    private @NonNull @Id Integer codigo_empleado;
+    @GeneratedValue(generator = "empleado_id_gen")
+    @GenericGenerator(name = "empleado_id_gen", strategy = NicoNumIdGen.STRAT)
+    private @Id Integer codigo_empleado;
+
     private @NonNull String nombre;
     private @NonNull String apellido1;
     private String apellido2;

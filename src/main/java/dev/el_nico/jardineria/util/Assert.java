@@ -4,8 +4,10 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import dev.el_nico.jardineria.excepciones.ExcepcionDatoNoValido;
+import dev.el_nico.jardineria.excepciones.ExcepcionFormatoIncorrecto;
 
 public class Assert {
+    
     private Assert(){}
 
     /**
@@ -40,6 +42,22 @@ public class Assert {
         if (object == null) {
             throw new ExcepcionDatoNoValido(new StringBuilder().append(dbName)
                     .append(" es NOT NULL, pero el parámetro de la aserción sí lo es").toString());
+        }
+    }
+
+    /**
+     * Comprueba que el String string cumple la expresión regular
+     * regex. Si no, lanza una excepción.
+     * @param dbName El nombre de la variable en la base de datos.
+     * @param regex Expresión regular.
+     * @param string La cadena que debería cumplir la expresión regular.
+     * @throws ExcepcionFormatoIncorrecto Si la expresión no se cumple.
+     */
+    public static void regexMatch(@NonNull String dbName, @NonNull String regex, @NonNull String string) throws ExcepcionFormatoIncorrecto {
+        if (!string.matches(regex)) {
+            throw new ExcepcionFormatoIncorrecto(
+                    new StringBuilder().append(dbName).append(" debería cumplir el patrón ").append(regex)
+                            .append(", pero es ").append(string).toString());
         }
     }
 }

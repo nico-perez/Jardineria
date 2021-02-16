@@ -12,13 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.GenericGenerators;
-import org.hibernate.annotations.Parameter;
 
 import dev.el_nico.jardineria.excepciones.ExcepcionDatoNoValido;
 import dev.el_nico.jardineria.excepciones.ExcepcionFormatoIncorrecto;
@@ -53,7 +50,8 @@ public @Entity class Cliente {
 
     @GeneratedValue(generator = "cliente_id_gen")
     @GenericGenerator(name = "cliente_id_gen", strategy = NicoNumIdGen.STRAT)
-    private @Id Integer codigo_cliente; 
+    private @Id Integer codigo_cliente;
+    
     private @NonNull String nombre_cliente;
     private @NonNull @Embedded Contacto contacto;
     private @NonNull @Embedded Domicilio domicilio;
@@ -72,8 +70,7 @@ public @Entity class Cliente {
     private @Transient String contrasena;
 
     /*pkg*/ Cliente() {} // hivernate
-    private Cliente(/*int codigo,*/ String nombre, Contacto contacto,  Domicilio domicilio) {
-        //this.codigo_cliente = codigo;
+    private Cliente(String nombre, Contacto contacto,  Domicilio domicilio) {
         this.nombre_cliente = nombre;
         this.contacto = contacto;
         this.domicilio = domicilio;
@@ -95,7 +92,6 @@ public @Entity class Cliente {
      * Devuelve el código del empleado representante de 
      * ventas.
      */
-    //@Column(name = "cod_empleado_rep_ventas")
     public Optional<Integer> getCodigoEmpleadoRepVentas() {
         if (empleado_rep_ventas != null) {
             return Optional.of(empleado_rep_ventas.getCodigo());
@@ -391,7 +387,6 @@ public @Entity class Cliente {
         public Cliente buildOrThrow() throws ExcepcionDatoNoValido,
                                              ExcepcionFormatoIncorrecto {
             /* QUE LOS DATOS NOT NULL NO SEAN NULL */
-           // Assert.notNull("codigo_cliente", este.codigo_cliente);
             Assert.notNull("nombre_cliente", este.nombre_cliente);
             Assert.notNull("telefono", este.contacto.telefono);
             Assert.notNull("fax", este.contacto.fax);
