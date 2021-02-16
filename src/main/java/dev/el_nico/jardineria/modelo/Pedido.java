@@ -52,6 +52,7 @@ public @Entity class Pedido {
     @GeneratedValue(generator = "pedido_id_gen")
     @GenericGenerator(name = "pedido_id_gen", strategy = NicoNumIdGen.STRAT)
     private @Id Integer codigo_pedido;
+    
     private @NonNull @Embedded Fecha fecha;
     private @NonNull String estado;
     private String comentarios;

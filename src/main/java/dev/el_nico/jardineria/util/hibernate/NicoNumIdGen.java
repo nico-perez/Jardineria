@@ -8,7 +8,7 @@ import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.IdentifierGenerator;
 
 /**
- * Para autogenerar claves numéricas
+ * Para autogenerar claves numéricas. Pilla la primera nula o 1, si no hay ninguna.
  */
 public class NicoNumIdGen implements IdentifierGenerator {
 
