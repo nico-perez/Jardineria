@@ -3,7 +3,6 @@ package dev.el_nico.jardineria.modelo;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -54,10 +53,10 @@ public @Entity class Cliente {
     
     private @NonNull String nombre_cliente;
     private @NonNull @Embedded Contacto contacto;
-    private @NonNull @Embedded Domicilio domicilio;
+    private @NonNull @Embedded Direccion domicilio;
     private @NonNull Double limite_credito;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "codigo_empleado_rep_ventas") // el nombre de la columna de la tabla cliente (integer)
     private Empleado empleado_rep_ventas;
 
@@ -70,7 +69,7 @@ public @Entity class Cliente {
     private @Transient String contrasena;
 
     /*pkg*/ Cliente() {} // hivernate
-    private Cliente(String nombre, Contacto contacto,  Domicilio domicilio) {
+    private Cliente(String nombre, Contacto contacto,  Direccion domicilio) {
         this.nombre_cliente = nombre;
         this.contacto = contacto;
         this.domicilio = domicilio;
@@ -118,7 +117,7 @@ public @Entity class Cliente {
     }
 
     /** Devuelve los datos de domicilio. Nunca es null. */
-    public Domicilio getDomicilio() {
+    public Direccion getDomicilio() {
         return domicilio;
     }
 
@@ -191,75 +190,6 @@ public @Entity class Cliente {
         }
     }
 
-    /**
-     * Representa los datos de domicilio de un cliente.
-     * Contienen, obligatoriamente, una línea de dirección
-     * y la ciudad. Además, pueden tener una segunda línea
-     * de dirección, un código postal (cp), una región y
-     * un país.
-     */
-    public static @Embeddable class Domicilio {
-        private @NonNull String linea_direccion1;
-        private String linea_direccion2;
-        private @NonNull String ciudad;
-        private String region;
-        private String pais;
-        private String codigo_postal;
-
-        /*pkg*/ Domicilio() {} // hibernatoe
-        private Domicilio(String direccion1, String ciudad) {
-            this.linea_direccion1 = direccion1;
-            this.ciudad = ciudad;
-            
-            linea_direccion2 = null;
-            region = null;
-            pais = null;
-            codigo_postal = null;
-        }
-
-        /** 
-         * Devuelve la primera línea de dirección del domicilio 
-         * del cliente. Nunca es null.
-         */
-        public String lineaDireccion1() {
-            return linea_direccion1;
-        }
-
-        /** Devuelve la ciudad del cliente. Nunca es null. */
-        public String ciudad() {
-            return ciudad;
-        }
-
-        /** 
-         * Devuelve la segunda línea de dirección del domicilio
-         * del cliente.
-         */
-        public Optional<String> lineaDireccion2() {
-            return Optional.ofNullable(linea_direccion2);
-        }
-
-        /** Devuelve la región del domicilio del cliente. */
-        public Optional<String> region() {
-            return Optional.ofNullable(region);
-        }
-
-        /** Devuelve el país del domicilio del cliente. */
-        public Optional<String> pais() {
-            return Optional.ofNullable(pais);
-        }
-
-        /** Devuelve el código postal del domicilio del cliente */
-        public Optional<String> codigoPostal() {
-            return Optional.ofNullable(codigo_postal);
-        }
-
-        @Override
-        public String toString() {
-            return "Domicilio [ciudad=" + ciudad + ", cp=" + codigo_postal + ", direccion1=" + linea_direccion1 + ", direccion2="
-                    + linea_direccion2 + ", pais=" + pais + ", region=" + region + "]";
-        }
-    }
-
     /** Clase para buildear instancias válidas de Cliente. */
     public static class Builder extends AbstractBuilder<Cliente> {
       
@@ -274,7 +204,7 @@ public @Entity class Cliente {
             este = new Cliente(//codigo, 
                                nombre, 
                                new Contacto(telefono, fax), 
-                               new Domicilio(direccion1, ciudad));
+                               new Direccion(direccion1, ciudad));
         }
 
         public Builder(Cliente otro) {
@@ -395,18 +325,18 @@ public @Entity class Cliente {
 
             /* QUE LAS LONGITUDES DE LOS VARCHAR SEAN VÁLIDAS */
             final Cliente.Contacto cto = este.contacto;
-            final Cliente.Domicilio dom = este.domicilio;
+            final Direccion dom = este.domicilio;
             Assert.varcharLength("nombre_cliente", este.getNombre(), 50);
             Assert.varcharLength("nombre_contacto", cto.nombre().orElse(null), 30);
             Assert.varcharLength("apellido_contacto", cto.apellido().orElse(null), 30);
             Assert.varcharLength("telefono", cto.telefono(), 15);
             Assert.varcharLength("fax", cto.fax(), 15);
-            Assert.varcharLength("linea_direccion1", dom.lineaDireccion1(), 50);
-            Assert.varcharLength("linea_direccion2", dom.lineaDireccion2().orElse(null), 50);
-            Assert.varcharLength("ciudad", dom.ciudad(), 50);
-            Assert.varcharLength("region", dom.region().orElse(null), 50);
-            Assert.varcharLength("pais", dom.pais().orElse(null), 50);
-            Assert.varcharLength("codigo_postal", dom.codigoPostal().orElse(null), 10);
+            Assert.varcharLength("linea_direccion1", dom.getLineaDireccion1().get(), 50);
+            Assert.varcharLength("linea_direccion2", dom.getLineaDireccion2().orElse(null), 50);
+            Assert.varcharLength("ciudad", dom.getCiudad().get(), 50);
+            Assert.varcharLength("region", dom.getRegion().orElse(null), 50);
+            Assert.varcharLength("pais", dom.getPais().orElse(null), 50);
+            Assert.varcharLength("codigo_postal", dom.getCodigoPostal().orElse(null), 10);
 
             /* COMPROBAR E-MAIL Y CONTRASEÑA */
             if (este.email != null) {
@@ -458,11 +388,11 @@ public @Entity class Cliente {
             contacto.telefono,
             contacto.fax,
             domicilio.linea_direccion1,
-            getDomicilio().lineaDireccion2().orElse(""),
+            getDomicilio().getLineaDireccion2().orElse(""),
             domicilio.ciudad,
-            getDomicilio().region().orElse(""),
-            getDomicilio().pais().orElse(""),
-            getDomicilio().codigoPostal().orElse(""),
+            getDomicilio().getRegion().orElse(""),
+            getDomicilio().getPais().orElse(""),
+            getDomicilio().getCodigoPostal().orElse(""),
             getCodigoEmpleadoRepVentas().isPresent() ? getCodigoEmpleadoRepVentas().get().toString() : "",
             getLimiteCredito().isPresent() ? limite_credito.toString() : "",
             getTipoDocumento().isPresent() ? tipo_documento.toString() : "",
@@ -489,10 +419,10 @@ public @Entity class Cliente {
                 .append(getContacto().apellido().orElse("------")).append("\n  Tlf: ").append(contacto.telefono)
                 .append("\n  Fax: ").append(contacto.fax).append("\n}\nDomicilio {\n  Ln1: ")
                 .append(domicilio.linea_direccion1).append("\n  Ln2: ")
-                .append(getDomicilio().lineaDireccion2().orElse("------")).append("\n  Ciu: ").append(domicilio.ciudad)
-                .append("\n  Reg: ").append(getDomicilio().region().orElse("------")).append("\n  Pai: ")
-                .append(getDomicilio().pais().orElse("------")).append("\n   CP: ")
-                .append(getDomicilio().codigoPostal().orElse("------")).append("\n}\nRpVtas: ")
+                .append(getDomicilio().getLineaDireccion2().orElse("------")).append("\n  Ciu: ").append(domicilio.ciudad)
+                .append("\n  Reg: ").append(getDomicilio().getRegion().orElse("------")).append("\n  Pai: ")
+                .append(getDomicilio().getPais().orElse("------")).append("\n   CP: ")
+                .append(getDomicilio().getCodigoPostal().orElse("------")).append("\n}\nRpVtas: ")
                 .append((getCodigoEmpleadoRepVentas().isPresent() ? empleado_rep_ventas : "------"))
                 .append("\nLimCrd: ").append((getLimiteCredito().isPresent() ? limite_credito : "------"));
         sb.trimToSize();

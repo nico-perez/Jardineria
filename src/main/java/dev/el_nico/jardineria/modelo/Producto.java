@@ -3,17 +3,23 @@ package dev.el_nico.jardineria.modelo;
 import java.util.Optional;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.hibernate.annotations.GenericGenerator;
 
 import dev.el_nico.jardineria.excepciones.ExcepcionDatoNoValido;
 import dev.el_nico.jardineria.util.AbstractBuilder;
 import dev.el_nico.jardineria.util.Assert;
+import dev.el_nico.jardineria.util.hibernate.NicoProdIdGen;
 
 public @Entity class Producto {
     
-    private @NonNull @Id String codigo_producto;
+    @GeneratedValue(generator = "producto_id_gen")
+    @GenericGenerator(name = "producto_id_gen", strategy = NicoProdIdGen.STRAT)
+    private @Id String codigo_producto;
+
     private @NonNull String nombre;
     private @NonNull String gama;
     private String dimensiones;
@@ -32,7 +38,7 @@ public @Entity class Producto {
         this.precio_venta = precio_venta;
     }
 
-    public String getCodigoProducto() {
+    public String getCodigo() {
         return codigo_producto;
     }
 

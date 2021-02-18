@@ -1,5 +1,9 @@
 package dev.el_nico.jardineria.modelo;
 
+import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.CascadeType.REFRESH;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -57,11 +61,11 @@ public @Entity class Pedido {
     private @NonNull String estado;
     private String comentarios;
     
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { MERGE, PERSIST, REFRESH })
     @JoinColumn(name = "codigo_cliente", nullable = false)
     private @NonNull Cliente cliente;
 
-    @OneToMany(mappedBy = "pedido")
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
     private @NonNull List<DetallePedido> detalles;
 
     /*pkg*/ Pedido() {} // hiebnate

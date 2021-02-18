@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import dev.el_nico.jardineria.modelo.Cliente;
-import dev.el_nico.jardineria.util.SesionHibernate;
+import dev.el_nico.jardineria.util.hibernate.SesionHibernate;
 
 public class SesionHibernateTest {
     

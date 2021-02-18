@@ -18,8 +18,8 @@ public class NicoNumIdGen implements IdentifierGenerator {
     @SuppressWarnings("unchecked")
     public Serializable generate(SharedSessionContractImplementor session, Object obj) throws HibernateException {
         String query = "select min(:id) + 1 from :cl c where (select :id from :cl where :id = c.:id + 1) is null"
-                .replaceAll(":id", session.getEntityPersister(obj.getClass().getName(), obj).getIdentifierPropertyName())
-                .replaceAll(":cl", obj.getClass().getSimpleName());
+                .replace(":id", session.getEntityPersister(obj.getClass().getName(), obj).getIdentifierPropertyName())
+                .replace(":cl", obj.getClass().getSimpleName());
        
         return (int) ((Optional<Integer>) session.createQuery(query).uniqueResultOptional()).orElse(1);
     }

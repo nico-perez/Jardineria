@@ -43,7 +43,9 @@ public class PedidosDao implements IDao<Pedido> {
 
     @Override
     public void eliminar(Pedido t) {
+        SesionHibernate.get().beginTransaction();
         SesionHibernate.get().delete(t);
+        SesionHibernate.get().getTransaction().commit();
     }
     
 }

@@ -12,7 +12,7 @@ public class ClienteTest {
 
     @Test
     public void LanzaExcepcionConEmailMalformado() {
-        Cliente.Builder builder = new Cliente.Builder(1, "nombre", "tlf", "fax", "dir", "ciudad");
+        Cliente.Builder builder = new Cliente.Builder("nombre", "tlf", "fax", "dir", "ciudad");
         try {
             builder.conEmail("nombre@hotmailes", "1234").buildOrThrow();
             fail();
@@ -43,13 +43,13 @@ public class ClienteTest {
     @Test
     public void AceptaClienteConEmailCorrecto() {
         try {
-            new Cliente.Builder(1, "nombre", "tlf", "fax", "dir", "ciudad")
+            new Cliente.Builder("nombre", "tlf", "fax", "dir", "ciudad")
                        .conEmail("un_email@servicio.com", "1234")
                        .buildOrThrow();
-            new Cliente.Builder(2, "nombre2", "tlf2", "fax2", "dir2", "ciudad2")
+            new Cliente.Builder("nombre2", "tlf2", "fax2", "dir2", "ciudad2")
                        .conEmail("djsjfd@fgo.e", "1234")
                        .buildOrThrow();
-            new Cliente.Builder(3, "nombre3", "tlf3", "fax3", "dir3", "ciudad3")
+            new Cliente.Builder("nombre3", "tlf3", "fax3", "dir3", "ciudad3")
                        .conEmail("hola12344@hotmail.com", "1234")
                        .buildOrThrow();
             assertTrue(true);
@@ -60,7 +60,7 @@ public class ClienteTest {
 
     @Test
     public void LanzaExcepcionConDocumentoMalformado() {
-        Cliente.Builder builder = new Cliente.Builder(1, "nombre", "tlf", "fax", "dir", "ciudad");
+        Cliente.Builder builder = new Cliente.Builder("nombre", "tlf", "fax", "dir", "ciudad");
         try {
             builder.conDocumento(TipoDocumento.DNI, "123456789a").buildOrThrow();
             fail();
@@ -98,16 +98,16 @@ public class ClienteTest {
     @Test
     public void AceptaDocumentoCorrecto() {
         try {
-            new Cliente.Builder(1, "nombre", "tlf", "fax", "dir", "ciudad")
+            new Cliente.Builder("nombre", "tlf", "fax", "dir", "ciudad")
                        .conDocumento(TipoDocumento.DNI, "12345678A")
                        .buildOrThrow();
-            new Cliente.Builder(2, "nombre2", "tlf2", "fax2", "dir2", "ciudad2")
+            new Cliente.Builder("nombre2", "tlf2", "fax2", "dir2", "ciudad2")
                        .conDocumento(TipoDocumento.DNI, "22228888I")
                        .buildOrThrow();
-            new Cliente.Builder(3, "nombre3", "tlf3", "fax3", "dir3", "ciudad3")
+            new Cliente.Builder("nombre3", "tlf3", "fax3", "dir3", "ciudad3")
                        .conDocumento(TipoDocumento.NIE, "I0000000I")
                        .buildOrThrow();
-            new Cliente.Builder(3, "nombre4", "tlf4", "fax4", "dir4", "ciudad4")
+            new Cliente.Builder("nombre4", "tlf4", "fax4", "dir4", "ciudad4")
                        .conDocumento(TipoDocumento.NIE, "A1234567B")
                        .buildOrThrow();
             assertTrue(true);
@@ -119,7 +119,7 @@ public class ClienteTest {
     @Test
     public void testAssertEnClienteBuilder() {
         try {
-            new Cliente.Builder(3498, "txankete", "1243", "123", "1443", "34")
+            new Cliente.Builder("txankete", "1243", "123", "1443", "34")
                     .conCodigoPostal("123456789012").buildOrThrow();
                     fail();
         } catch (ExcepcionDatoNoValido | ExcepcionFormatoIncorrecto e) {
