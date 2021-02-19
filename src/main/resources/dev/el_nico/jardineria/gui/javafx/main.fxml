@@ -46,8 +46,9 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.el_nico.jardineria.gui.javafx.MainController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -88,19 +89,33 @@
         </Menu>
       </menus>
     </MenuBar>
-      <BorderPane prefHeight="427.0" prefWidth="640.0">
+      <BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0">
          <bottom>
-            <HBox prefHeight="31.0" prefWidth="640.0" BorderPane.alignment="CENTER" />
+            <HBox minHeight="-Infinity" prefHeight="32.0" prefWidth="800.0" BorderPane.alignment="BOTTOM_CENTER" />
          </bottom>
          <left>
-            <VBox prefHeight="332.0" prefWidth="57.0" BorderPane.alignment="CENTER">
+            <VBox prefHeight="332.0" prefWidth="57.0" BorderPane.alignment="CENTER_LEFT">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="47.0" prefWidth="47.0" text="B1">
+                  <Button fx:id="btnAgregarEntidad" mnemonicParsing="false" onAction="#consultarBBDD" prefHeight="47.0" prefWidth="47.0" text="➕" textAlignment="CENTER">
                      <VBox.margin>
                         <Insets bottom="2.5" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
+                     <font>
+                        <Font size="19.0" />
+                     </font>
                   </Button>
-                  <Button mnemonicParsing="false" prefHeight="47.0" prefWidth="47.0" text="B2">
+                  <Button fx:id="btnEliminarEntidad" mnemonicParsing="false" prefHeight="47.0" prefWidth="47.0" text="✖">
+                     <VBox.margin>
+                        <Insets bottom="2.5" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btnEditarEntidad" mnemonicParsing="false" prefHeight="47.0" prefWidth="47.0" text="✍">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
@@ -109,7 +124,7 @@
             </VBox>
          </left>
          <center>
-            <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+            <TabPane fx:id="contenedorTablas" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
               <tabs>
                 <Tab text="Clientes">
                   <content>

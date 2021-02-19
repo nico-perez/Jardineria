@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright (c) 2015, 2019, Gluon and/or its affiliates.
+  All rights reserved. Use is subject to license terms.
+
+  This file is available and licensed under the following license:
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+  - Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+  - Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the distribution.
+  - Neither the name of Oracle Corporation nor the names of its
+    contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="270.0" prefWidth="290.0" side="BOTTOM" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.el_nico.jardineria.gui.javafx.LoginController">
+  <tabs>
+    <Tab text="MySQL">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <PasswordField fx:id="pwdSqlContrasena" layoutX="102.0" layoutY="87.0" prefHeight="25.0" prefWidth="136.0" text="admin" />
+                  <TextField fx:id="txtSqlUsuario" layoutX="102.0" layoutY="48.0" prefHeight="25.0" prefWidth="136.0" text="admin" />
+                  <Label layoutX="57.0" layoutY="52.0" text="Usuario" />
+                  <Label layoutX="38.0" layoutY="91.0" text="Contraseña" />
+                  <Hyperlink layoutX="134.0" layoutY="112.0" text="Recuperar contraseña">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Hyperlink>
+                  <Button fx:id="btnSqlIniciarSesion" defaultButton="true" layoutX="104.0" layoutY="202.0" mnemonicParsing="false" onAction="#loginMySql" text="Iniciar sesión" />
+                  <Text fx:id="txtSqlError" layoutX="2.0" layoutY="165.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Error" textAlignment="CENTER" visible="false" wrappingWidth="290.0" />
+                  <Circle fx:id="circuloCargando" layoutX="147.0" layoutY="160.0" radius="19.0" stroke="BLACK" strokeLineJoin="BEVEL" strokeType="INSIDE" strokeWidth="0.0" visible="false">
+                     <fill>
+                        <RadialGradient centerX="0.9222222222222222" cycleMethod="REFLECT" focusAngle="-147.99" focusDistance="-0.4418604651162791" radius="0.627906976744186">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="0.47843137383461" green="0.7921568751335144" blue="1.0" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="0.09961685823754787">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="0.2107279693486589">
+                                 <color>
+                                    <Color red="0.47843137383461" green="0.7921568751335144" blue="1.0" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="0.3277639530750088">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="0.4329501915708812">
+                                 <color>
+                                    <Color red="0.47843137383461" green="0.7921568751335144" blue="1.0" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="0.5471817355926843">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="0.6513409961685822">
+                                 <color>
+                                    <Color red="0.47843137383461" green="0.7921568751335144" blue="1.0" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="0.7630445945412169">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="0.883596002685942">
+                                 <color>
+                                    <Color red="0.47843137383461" green="0.7921568751335144" blue="1.0" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </RadialGradient>
+                     </fill>
+                  </Circle>
+               </children></AnchorPane>
+      </content>
+    </Tab>
+    <Tab text="JSON">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="btnJsonCargarFichero" defaultButton="true" layoutX="119.0" layoutY="202.0" mnemonicParsing="false" text="Cargar" />
+                  <TextField fx:id="txtJsonNuevoFichero" layoutX="18.0" layoutY="154.0" prefHeight="25.0" prefWidth="230.0" promptText="nombre de nuevo fichero" />
+                  <Button fx:id="btnJsonNuevoFichero" layoutX="248.0" layoutY="154.0" mnemonicParsing="false" text="+" />
+                  <ListView fx:id="lstJsonListaFicheros" layoutX="18.0" layoutY="42.0" prefHeight="112.0" prefWidth="254.0" />
+                  <Label fx:id="lblJsonRuta" layoutX="24.0" layoutY="25.0" text="Ruta" />
+               </children></AnchorPane>
+      </content>
+    </Tab>
+  </tabs>
+</TabPane>

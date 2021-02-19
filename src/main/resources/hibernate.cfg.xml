@@ -44,6 +44,9 @@
         <mapping class="dev.el_nico.jardineria.modelo.Producto"/>
         <mapping class="dev.el_nico.jardineria.modelo.DetallePedido"/>
         <mapping class="dev.el_nico.jardineria.modelo.Empleado"/>
+        <mapping class="dev.el_nico.jardineria.modelo.Pago"/>
+        <mapping class="dev.el_nico.jardineria.modelo.Oficina"/>
+        <mapping class="dev.el_nico.jardineria.modelo.GamaProducto"/>
     </session-factory>
 
 </hibernate-configuration>
