@@ -50,7 +50,7 @@
 
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="270.0" prefWidth="290.0" side="BOTTOM" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.el_nico.jardineria.gui.javafx.LoginController">
   <tabs>
-    <Tab text="MySQL">
+    <Tab closable="false" text="MySQL">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -67,56 +67,56 @@
                   <Text fx:id="txtSqlError" layoutX="2.0" layoutY="165.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Error" textAlignment="CENTER" visible="false" wrappingWidth="290.0" />
                   <Circle fx:id="circuloCargando" layoutX="147.0" layoutY="160.0" radius="19.0" stroke="BLACK" strokeLineJoin="BEVEL" strokeType="INSIDE" strokeWidth="0.0" visible="false">
                      <fill>
-                        <RadialGradient centerX="0.9222222222222222" cycleMethod="REFLECT" focusAngle="-147.99" focusDistance="-0.4418604651162791" radius="0.627906976744186">
+                        <RadialGradient centerX="0.6055555555555554" centerY="0.5904761904761905" focusAngle="-147.99" focusDistance="0.3023255813953487" radius="0.4883720930232558">
                            <stops>
                               <Stop>
                                  <color>
                                     <Color red="0.47843137383461" green="0.7921568751335144" blue="1.0" />
                                  </color>
                               </Stop>
-                              <Stop offset="0.09961685823754787">
-                                 <color>
-                                    <Color red="1.0" green="1.0" blue="1.0" />
-                                 </color>
-                              </Stop>
-                              <Stop offset="0.2107279693486589">
+                              <Stop offset="0.04214559386973179">
                                  <color>
                                     <Color red="0.47843137383461" green="0.7921568751335144" blue="1.0" />
                                  </color>
                               </Stop>
-                              <Stop offset="0.3277639530750088">
+                              <Stop offset="0.16858237547892715">
                                  <color>
                                     <Color red="1.0" green="1.0" blue="1.0" />
                                  </color>
                               </Stop>
-                              <Stop offset="0.4329501915708812">
+                              <Stop offset="0.2681992337164749">
                                  <color>
                                     <Color red="0.47843137383461" green="0.7921568751335144" blue="1.0" />
                                  </color>
                               </Stop>
-                              <Stop offset="0.5471817355926843">
+                              <Stop offset="0.3660781293202195">
                                  <color>
                                     <Color red="1.0" green="1.0" blue="1.0" />
                                  </color>
                               </Stop>
-                              <Stop offset="0.6513409961685822">
+                              <Stop offset="0.4674329501915709">
                                  <color>
                                     <Color red="0.47843137383461" green="0.7921568751335144" blue="1.0" />
                                  </color>
                               </Stop>
-                              <Stop offset="0.7630445945412169">
+                              <Stop offset="0.5740016589643316">
                                  <color>
                                     <Color red="1.0" green="1.0" blue="1.0" />
                                  </color>
                               </Stop>
-                              <Stop offset="0.883596002685942">
+                              <Stop offset="0.6704980842911875">
                                  <color>
                                     <Color red="0.47843137383461" green="0.7921568751335144" blue="1.0" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="0.7898645179128642">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" opacity="0.0" />
                                  </color>
                               </Stop>
                               <Stop offset="1.0">
                                  <color>
-                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                    <Color red="1.0" green="1.0" blue="1.0" opacity="0.0" />
                                  </color>
                               </Stop>
                            </stops>
@@ -126,7 +126,7 @@
                </children></AnchorPane>
       </content>
     </Tab>
-    <Tab text="JSON">
+    <Tab closable="false" disable="true" text="JSON">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>

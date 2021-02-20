@@ -11,7 +11,7 @@ import javax.persistence.Embeddable;
  * de dirección, un código postal (cp), una región y
  * un país.
  */
-@Embeddable class Direccion {
+public @Embeddable class Direccion {
 
     String linea_direccion1;
     String linea_direccion2;

@@ -54,7 +54,7 @@ public @Entity class Cliente {
     private @NonNull String nombre_cliente;
     private @NonNull @Embedded Contacto contacto;
     private @NonNull @Embedded Direccion domicilio;
-    private @NonNull Double limite_credito;
+    private Double limite_credito;
 
     @ManyToOne
     @JoinColumn(name = "codigo_empleado_rep_ventas") // el nombre de la columna de la tabla cliente (integer)
@@ -83,7 +83,7 @@ public @Entity class Cliente {
     }
 
     /** Devuelve el código de cliente. */
-    public int getCodigo() {
+    public Integer getCodigo() {
         return codigo_cliente;
     }
 
@@ -116,9 +116,49 @@ public @Entity class Cliente {
         return contacto;
     }
 
+    public Optional<String> getNombreContacto() {
+        return contacto.nombre();
+    }
+
+    public Optional<String> getApellidoContacto() {
+        return contacto.apellido();
+    }
+
+    public String getTelefono() {
+        return contacto.telefono;
+    }
+
+    public String getFax() {
+        return contacto.fax;
+    }
+
     /** Devuelve los datos de domicilio. Nunca es null. */
     public Direccion getDomicilio() {
         return domicilio;
+    }
+
+    public String getLineaDireccion1() {
+        return domicilio.linea_direccion1;
+    }
+
+    public Optional<String> getLineaDireccion2() {
+        return domicilio.getLineaDireccion2();
+    }
+
+    public String getCiudad() {
+        return domicilio.ciudad;
+    }
+
+    public Optional<String> getRegion() {
+        return domicilio.getRegion();
+    }
+
+    public Optional<String> getPais() {
+        return domicilio.getPais();
+    }
+
+    public Optional<String> getCodigoPostal() {
+        return domicilio.getCodigoPostal();
     }
 
     /** 

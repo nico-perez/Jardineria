@@ -5,6 +5,7 @@ module nico.jardineria {
     requires javafx.fxml;
     requires transitive javafx.graphics;
     opens dev.el_nico.jardineria.gui.javafx to javafx.fxml;
+    opens dev.el_nico.jardineria.modelo to javafx.base, org.hibernate.orm.core;
     exports dev.el_nico.jardineria.gui.javafx to javafx.graphics;
 
     // orm 
@@ -18,10 +19,11 @@ module nico.jardineria {
     requires org.hibernate.commons.annotations;
     requires org.jboss.logging;
     requires net.bytebuddy;
+    requires antlr; ////////?????????????????????????
     requires dom4j; // ???
     requires mysql.connector.java; // ???????
 
-    opens dev.el_nico.jardineria.modelo to org.hibernate.orm.core;
+    // opens dev.el_nico.jardineria.modelo to org.hibernate.orm.core; // está más arriba porque si hay dos opens no le gusta
     exports dev.el_nico.jardineria.util.hibernate to org.hibernate.orm.core;
 
     // otros
