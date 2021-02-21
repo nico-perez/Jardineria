@@ -1,0 +1,10 @@
+
+.menu-bar, .hbox {
+    -fx-background-color: #7acaff;
+}
+.vbox {
+    -fx-background-color: lightblue;
+}
+.table-view {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}

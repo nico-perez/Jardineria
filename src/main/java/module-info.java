@@ -1,6 +1,7 @@
 @SuppressWarnings("module") // automatic module name noseque nosecuantas
 module nico.jardineria {
     // gui
+    requires java.naming;
     requires javafx.controls;
     requires javafx.fxml;
     requires transitive javafx.graphics;

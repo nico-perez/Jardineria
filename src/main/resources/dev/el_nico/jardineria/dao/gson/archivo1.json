@@ -1,0 +1,112 @@
+{
+    "clientes": [
+        {
+            "codigo_cliente": 1,
+            "nombre_cliente": "Empresa 1",
+            "contacto": {
+                "nombre_contacto": "Mari",
+                "apellido_contacto_contacto": "Carmen",
+                "telefono": "1234",
+                "fax": "84743 DFJL"
+            },
+            "domicilio": {
+                "linea_direccion1": "Calle",
+                "ciudad": "Ciudad"
+            }
+        },
+        {
+            "codigo_cliente": 2,
+            "nombre_cliente": "Otra empresa!",
+            "contacto": {
+                "telefono": "99928883374",
+                "fax": "217378-543"
+            },
+            "domicilio": {
+                "linea_direccion1": "Avenida Pinseque 55",
+                "ciudad": "Portugal",
+                "codigo_postal": "888262"
+            },
+            "limite_credito": 2500.0,
+            "tipo_doc": "NIE",
+            "dni": "A9922233B"
+        },
+        {
+            "codigo_cliente": 3,
+            "nombre_cliente": "Nico S.L.",
+            "contacto": {
+                "nombre_contacto": "Nicolás",
+                "apellido_contacto": "Pérez",
+                "telefono": "1122233",
+                "fax": "112234"
+            },
+            "domicilio": {
+                "linea_direccion1": "Avenida",
+                "ciudad": "Zaragoza",
+                "linea_direccion2": "Cérsar Augusto",
+                "region": "País Aragonés",
+                "codigo_postal": "1"
+            },
+            "limite_credito": 100.0,
+            "tipo_doc": "DNI",
+            "dni": "33223322E",
+            "email": "nico@nico.nico",
+            "contrasena": "nico"
+        },
+        {
+            "codigo_cliente": 4,
+            "nombre_cliente": "TecnoTurbo",
+            "contacto": {
+                "nombre_contacto": "Gerardo",
+                "apellido_contacto": "Ibañete",
+                "telefono": "997334828384",
+                "fax": "12370234"
+            },
+            "domicilio": {
+                "linea_direccion1": "Calle Falsa, 123",
+                "ciudad": "Springfield",
+                "linea_direccion2": "Escalera Piso Puerta",
+                "pais": "USA"
+            },
+            "cod_empl_rep_ventas": 7,
+            "email": "hola@1.com",
+            "contrasena": "12312"
+        },
+        {
+            "codigo_cliente": 10,
+            "nombre_cliente": "Diez",
+            "contacto": {
+                "nombre_contacto": "nombre_contacto",
+                "apellido_contacto": "apellido_contacto",
+                "telefono": "10",
+                "fax": "10"
+            },
+            "domicilio": {
+                "linea_direccion1": "dir1",
+                "ciudad": "ciudad",
+                "linea_direccion2": "dir2",
+                "region": "region",
+                "pais": "pais",
+                "codigo_postal": "codigo_p"
+            },
+            "cod_empl_rep_ventas": 1,
+            "limite_credito": 1.0,
+            "tipo_doc": "DNI",
+            "dni": "10101010D",
+            "email": "email@10.a",
+            "contrasena": "10"
+        },
+        {
+            "codigo_cliente": 31,
+            "nombre_cliente": "1",
+            "contacto": {
+                "telefono": "11",
+                "fax": "1"
+            },
+            "domicilio": {
+                "linea_direccion1": "1",
+                "ciudad": "1"
+            }
+        }
+    ],
+    "pedidos": []
+}

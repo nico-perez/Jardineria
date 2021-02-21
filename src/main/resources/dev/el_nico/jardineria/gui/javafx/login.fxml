@@ -126,15 +126,15 @@
                </children></AnchorPane>
       </content>
     </Tab>
-    <Tab closable="false" disable="true" text="JSON">
+    <Tab closable="false" text="JSON">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="btnJsonCargarFichero" defaultButton="true" layoutX="119.0" layoutY="202.0" mnemonicParsing="false" text="Cargar" />
-                  <TextField fx:id="txtJsonNuevoFichero" layoutX="18.0" layoutY="154.0" prefHeight="25.0" prefWidth="230.0" promptText="nombre de nuevo fichero" />
-                  <Button fx:id="btnJsonNuevoFichero" layoutX="248.0" layoutY="154.0" mnemonicParsing="false" text="+" />
+                  <Button fx:id="btnJsonCargarFichero" defaultButton="true" layoutX="119.0" layoutY="202.0" mnemonicParsing="false" onAction="#cargarJson" text="Cargar" />
+                  <TextField fx:id="txtJsonNuevoFichero" disable="true" layoutX="18.0" layoutY="154.0" prefHeight="25.0" prefWidth="230.0" promptText="nombre de nuevo fichero" />
+                  <Button fx:id="btnJsonNuevoFichero" disable="true" layoutX="248.0" layoutY="154.0" mnemonicParsing="false" text="+" />
                   <ListView fx:id="lstJsonListaFicheros" layoutX="18.0" layoutY="42.0" prefHeight="112.0" prefWidth="254.0" />
-                  <Label fx:id="lblJsonRuta" layoutX="24.0" layoutY="25.0" text="Ruta" />
+                  <Label fx:id="lblJsonRuta" layoutX="23.0" layoutY="11.0" maxWidth="-Infinity" prefHeight="32.0" prefWidth="244.0" text="Ruta" />
                </children></AnchorPane>
       </content>
     </Tab>

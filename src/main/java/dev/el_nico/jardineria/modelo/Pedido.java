@@ -86,6 +86,18 @@ public @Entity class Pedido {
         return fecha;
     }
 
+    public Calendar getFechaPedido() {
+        return fecha.fecha_pedido;
+    }
+
+    public Calendar getFechaEsperada() {
+        return fecha.fecha_esperada;
+    }
+
+    public Optional<Calendar> getFechaEntrega() {
+        return fecha.entrega();
+    }
+
     /** Devuelve el estado del pedido. Nunca es null. */
     public String getEstado() {
         return estado;

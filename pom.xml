@@ -160,10 +160,10 @@
                                     <version>3.10.0</version>
                                 </path>
                             </annotationProcessorPaths>
-                            <annotationProcessors>
-                                <!-- Add all the checkers you want to enable here 
-                                <annotationProcessor>org.checkerframework.checker.nullness.NullnessChecker</annotationProcessor>-->
-                            </annotationProcessors>
+                            <!-- <annotationProcessors>
+                                Add all the checkers you want to enable here 
+                                <annotationProcessor>org.checkerframework.checker.nullness.NullnessChecker</annotationProcessor>
+                            </annotationProcessors>-->
                             <compilerArgs>
                                 <!-- <arg>-Awarns</arg> -->
                                 <!-- -Awarns turns type-checking errors into warnings. -->

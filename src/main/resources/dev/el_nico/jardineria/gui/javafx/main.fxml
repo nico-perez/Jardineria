@@ -47,9 +47,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.el_nico.jardineria.gui.javafx.MainController">
+<VBox prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #7acaff;" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.el_nico.jardineria.gui.javafx.MainController">
   <children>
-    <MenuBar VBox.vgrow="NEVER">
+    <MenuBar style="-fx-background-color: #7acaff;" VBox.vgrow="NEVER">
       <menus>
         <Menu mnemonicParsing="false" text="File">
           <items>
@@ -88,14 +88,14 @@
         </Menu>
       </menus>
     </MenuBar>
-      <BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0">
+      <BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #7acaff;">
          <bottom>
-            <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="32.0" prefWidth="800.0" BorderPane.alignment="BOTTOM_CENTER" />
+            <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="32.0" prefWidth="800.0" style="-fx-background-color: #7acaff;" stylesheets="@estilo.css" BorderPane.alignment="BOTTOM_CENTER" />
          </bottom>
          <left>
-            <VBox prefHeight="332.0" prefWidth="57.0" BorderPane.alignment="CENTER_LEFT">
+            <VBox prefHeight="332.0" prefWidth="57.0" style="-fx-background-color: #7acaff;" stylesheets="@estilo.css" BorderPane.alignment="CENTER_LEFT">
                <children>
-                  <Button fx:id="btnAgregarEntidad" mnemonicParsing="false" onAction="#consultarBBDD" prefHeight="47.0" prefWidth="47.0" text="➕" textAlignment="CENTER">
+                  <Button fx:id="btnAgregarEntidad" mnemonicParsing="false" onAction="#anadir" prefHeight="47.0" prefWidth="47.0" text="➕" textAlignment="CENTER">
                      <VBox.margin>
                         <Insets bottom="2.5" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
@@ -111,7 +111,7 @@
                         <Font size="19.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnEditarEntidad" mnemonicParsing="false" prefHeight="47.0" prefWidth="47.0" text="✍">
+                  <Button fx:id="btnEditarEntidad" mnemonicParsing="false" onAction="#editar" prefHeight="47.0" prefWidth="47.0" text="✍">
                      <font>
                         <Font size="19.0" />
                      </font>
@@ -123,22 +123,22 @@
             </VBox>
          </left>
          <center>
-            <TabPane fx:id="contenedorTablas" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+            <TabPane fx:id="contenedorTablas" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #7acaff;" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
               <tabs>
-                <Tab text="Clientes">
+                <Tab style="-fx-color: #e3e1b3; -fx-background-color: #d4d0ce;" text="Clientes">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TableView fx:id="clientes" prefHeight="539.0" prefWidth="743.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <TableView fx:id="clientes" prefHeight="539.0" prefWidth="743.0" style="-fx-background-color: #e7d2c4; -fx-color: #d4d0ce;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>
                         </AnchorPane>
                   </content>
                 </Tab>
-                <Tab text="Pedidos">
+                <Tab style="-fx-background-color: #d4d0ce; -fx-color: #fad3b9;" text="Pedidos">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TableView fx:id="pedidos" prefHeight="539.0" prefWidth="743.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <TableView fx:id="pedidos" prefHeight="539.0" prefWidth="743.0" style="-fx-color: #d4d0ce; -fx-background-color: #e7d2c4;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children></AnchorPane>
                   </content>
                 </Tab>

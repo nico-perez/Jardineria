@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.el_nico.jardineria.gui.javafx.EditarClienteController">
+   <children>
+      <AnchorPane prefHeight="416.0" prefWidth="400.0">
+         <children>
+            <TextField fx:id="codigo" layoutX="86.0" layoutY="14.0" />
+            <TextField fx:id="nombre" layoutX="86.0" layoutY="47.0" />
+            <TextField fx:id="nom_cto" layoutX="86.0" layoutY="80.0" />
+            <TextField fx:id="ape_cto" layoutX="235.0" layoutY="80.0" />
+            <TextField fx:id="telefono" layoutX="86.0" layoutY="115.0" />
+            <TextField fx:id="fax" layoutX="86.0" layoutY="151.0" />
+            <TextField fx:id="dir1" layoutX="86.0" layoutY="187.0" />
+            <TextField fx:id="dir2" layoutX="235.0" layoutY="187.0" />
+            <TextField fx:id="ciudad" layoutX="86.0" layoutY="222.0" />
+            <TextField fx:id="region" layoutX="235.0" layoutY="222.0" />
+            <TextField fx:id="pais" layoutX="86.0" layoutY="259.0" />
+            <TextField fx:id="cp" layoutX="235.0" layoutY="259.0" />
+            <TextField fx:id="cod_rep" layoutX="86.0" layoutY="297.0" />
+            <TextField fx:id="lim_cred" layoutX="86.0" layoutY="334.0" />
+            <Button fx:id="confirmar" layoutX="235.0" layoutY="377.0" mnemonicParsing="false" onAction="#actualizarCliente" text="Confirmar" />
+            <Label layoutX="14.0" layoutY="18.0" text="Código" />
+            <Label layoutX="14.0" layoutY="51.0" text="Nombre" />
+            <Label layoutX="14.0" layoutY="84.0" text="Nom &amp; Ap" />
+            <Label layoutX="14.0" layoutY="119.0" text="Teléfono" />
+            <Label layoutX="14.0" layoutY="155.0" text="Fax" />
+            <Label layoutX="12.0" layoutY="191.0" text="Lineas dir" />
+            <Label layoutX="3.0" layoutY="226.0" text="Ciudad, Region" />
+            <Label layoutX="18.0" layoutY="263.0" text="País, CP" />
+            <Label layoutX="4.0" layoutY="301.0" text="CodRepVentas" />
+            <Label layoutX="9.0" layoutY="338.0" text="Lím Cŕedito" />
+            <Button fx:id="resetear" layoutX="148.0" layoutY="377.0" mnemonicParsing="false" onAction="#resetearCampos" text="resetear" />
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

@@ -25,6 +25,7 @@ public class App extends Application {
     @Override
     public void start(Stage mainStage) throws IOException {
         // main
+        mainStage.setResizable(false);
         FXMLLoader mainLoader = new FXMLLoader(App.class.getResource("main.fxml"));
         mainScene = new Scene(mainLoader.load());
         MainController mainController = mainLoader.getController();
@@ -34,6 +35,7 @@ public class App extends Application {
         
         // login
         Stage loginStage = new Stage();
+        loginStage.setResizable(false);
         FXMLLoader loginLoader = new FXMLLoader(App.class.getResource("login.fxml"));
         loginScene = new Scene(loginLoader.load());
         LoginController loginController = loginLoader.getController();
